@@ -7,7 +7,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Property Rental Listings",
   description: "Find your dream rental property",
-  keywords: ["rental", "property", "listings", "properties", "rent"],
 };
 
 export default function RootLayout({
