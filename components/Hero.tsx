@@ -1,6 +1,19 @@
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+
+const selectOptions = [
+  { value: "All", label: "All" },
+  { value: "Apartment", label: "Apartment" },
+  { value: "Studio", label: "Studio" },
+  { value: "Condo", label: "Condo" },
+  { value: "House", label: "House" },
+  { value: "Cabin Or Cottage", label: "Cabin Or Cottage" },
+  { value: "Loft", label: "Loft" },
+  { value: "Room", label: "Room" },
+  { value: "Other", label: "Other" },
+];
 
 export function Hero() {
   return (
@@ -24,25 +37,21 @@ export function Hero() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value='All'>All</SelectItem>
-                  <SelectItem value='Apartment'>Apartment</SelectItem>
-                  <SelectItem value='Studio'>Studio</SelectItem>
-                  <SelectItem value='Condo'>Condo</SelectItem>
-                  <SelectItem value='House'>House</SelectItem>
-                  <SelectItem value='Cabin Or Cottage'>Cabin Or Cottage</SelectItem>
-                  <SelectItem value='Loft'>Loft</SelectItem>
-                  <SelectItem value='Room'>Room</SelectItem>
-                  <SelectItem value='Other'>Other</SelectItem>
+                  {selectOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
-          <button
+          <Button
             type='submit'
-            className='md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-500'
+            className='md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-500 h-auto'
           >
             Search
-          </button>
+          </Button>
         </form>
       </div>
     </section>
