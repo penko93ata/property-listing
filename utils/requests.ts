@@ -18,3 +18,22 @@ export async function fetchProperties() {
     return [];
   }
 }
+
+export async function fetchProperty(id: string) {
+  try {
+    if (!apiDomain) {
+      return null;
+    }
+
+    const response = await fetch(`${apiDomain}/properties/${id}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

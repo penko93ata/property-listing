@@ -16,7 +16,7 @@ export default async function HomeProperties() {
             {recentProperties.length === 0 ? (
               <p>No Properties Found</p>
             ) : (
-              recentProperties.map((property) => <PropertyCard key={property._id} property={property as Property} />)
+              recentProperties.map((property) => <PropertyCard key={property.id} property={property as Property} />)
             )}
           </div>
         </div>

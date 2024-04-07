@@ -19,7 +19,7 @@ export default async function Properties() {
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
             {sortedProperties.map((property) => (
-              <PropertyCard key={property._id} property={property as Property} />
+              <PropertyCard key={property.id} property={property as Property} />
             ))}
           </div>
         )}

@@ -1,5 +1,5 @@
 export type Property = {
-  _id: string;
+  id: string;
   owner: string;
   name: string;
   type: string;
