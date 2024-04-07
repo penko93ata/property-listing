@@ -13,7 +13,7 @@ function getRateDisplay(rates: Rates) {
   return `$${rates.nightly?.toLocaleString()}/night`;
 }
 
-export default function PropertyCard({ property }: { property: Property }) {
+export default function PropertyCard({ property }: Readonly<{ property: Property }>) {
   return (
     <div className='rounded-xl shadow-md relative'>
       <Image
