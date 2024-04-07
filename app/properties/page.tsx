@@ -1,8 +1,26 @@
 import PropertyCard from "@/components/PropertyCard";
-import properties from "@/properties.json";
 import { Property } from "@/types/properties.types";
+// import { Prisma } from "@prisma/client";
+import type { properties } from "@prisma/client";
 
-export default function Properties() {
+async function fetchProperties() {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/properties`);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export default async function Properties() {
+  // TODO - figure out correct type
+  const properties: Property[] = await fetchProperties();
+
   return (
     <section className='px-4 py-6'>
       <div className='container-xl lg:container m-auto px-4 py-6'>

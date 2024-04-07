@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  // provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+type PropertiesLocation {
+  city    String
+  state   String
+  street  String
+  zipcode String
+}
+
+type PropertiesRates {
+  monthly Int?
+  nightly Int?
+  weekly  Int?
+}
+
+type PropertiesSellerInfo {
+  email String
+  name  String
+  phone String
+}
+
+model properties {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  amenities   String[]
+  baths       Int
+  beds        Int
+  description String
+  images      String[]
+  isFeatured  Boolean              @default(false)
+  location    PropertiesLocation
+  name        String
+  user        users                @relation(fields: [owner], references: [id])
+  owner       String               @db.ObjectId
+  rates       PropertiesRates
+  seller_info PropertiesSellerInfo
+  square_feet Int
+  type        String
+  createdAt   String
+  updatedAt   String
+}
+
+model users {
+  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
+  email               String        @unique
+  username            String
+  image               String?
+  bookmarks           properties[]
+  sender_messages     messages[]    @relation("user_sender")
+  recipient_messages  messages[]    @relation("user_recipient")
+  createdAt           String
+  updatedAt           String
+}
+
+model messages {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  user_sender     users         @relation("user_sender", fields: [sender], references: [id])
+  user_recipient  users         @relation("user_recipient", fields: [recipient], references: [id])
+  sender          String        @db.ObjectId
+  recipient       String        @db.ObjectId
+  property        String
+  name            String
+  email           String
+  phone           String
+  body            String
+  read            Boolean       @default(false)
+  createdAt       String
+  updatedAt       String
+}
