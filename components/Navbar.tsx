@@ -144,7 +144,14 @@ function DesktopNavbarLinks({ providers }: { providers: TAuthProvider }) {
                 aria-labelledby='user-menu-button'
                 tabIndex={-1}
               >
-                <Link href='/profile' className='block px-4 py-2 text-sm text-gray-700' role='menuitem' tabIndex={-1} id='user-menu-item-0'>
+                <Link
+                  href='/profile'
+                  className='block px-4 py-2 text-sm text-gray-700'
+                  role='menuitem'
+                  tabIndex={-1}
+                  id='user-menu-item-0'
+                  onClick={() => setIsProfileMenuOpen(false)}
+                >
                   Your Profile
                 </Link>
                 <Link
@@ -153,6 +160,7 @@ function DesktopNavbarLinks({ providers }: { providers: TAuthProvider }) {
                   role='menuitem'
                   tabIndex={-1}
                   id='user-menu-item-2'
+                  onClick={() => setIsProfileMenuOpen(false)}
                 >
                   Saved Properties
                 </Link>
