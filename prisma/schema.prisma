@@ -43,8 +43,8 @@ model properties {
   seller_info PropertiesSellerInfo
   square_feet Int
   type        String
-  createdAt   String
-  updatedAt   String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model users {
@@ -55,8 +55,8 @@ model users {
   bookmarks           properties[]
   sender_messages     messages[]    @relation("user_sender")
   recipient_messages  messages[]    @relation("user_recipient")
-  createdAt           String
-  updatedAt           String
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 }
 
 model messages {
@@ -71,6 +71,6 @@ model messages {
   phone           String
   body            String
   read            Boolean       @default(false)
-  createdAt       String
-  updatedAt       String
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }

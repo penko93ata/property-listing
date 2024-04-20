@@ -6,9 +6,11 @@ import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 import { Button } from "./ui/button";
 import { FaGoogle } from "react-icons/fa";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+import { signIn, signOut, useSession, getProviders, LiteralUnion, ClientSafeProvider } from "next-auth/react";
+import { BuiltInProviderType } from "next-auth/providers/index";
 
 function useGetActiveLinkClasses(activeLink: string, activeClass = "bg-black") {
   const pathName = usePathname();
@@ -19,11 +21,22 @@ function useGetActiveLinkClasses(activeLink: string, activeClass = "bg-black") {
   );
 }
 
+type TAuthProvider = Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null;
+
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [providers, setProviders] = useState<TAuthProvider>(null);
 
-  // TODO - use next auth to determine if user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const setAuthProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+
+    setAuthProviders();
+  }, []);
+
+  console.log({ providers });
 
   return (
     <nav className='bg-blue-700 border-b border-blue-500'>
@@ -31,21 +44,24 @@ export function Navbar() {
         <div className='relative flex h-20 items-center justify-between'>
           <BurgerMenuButton toggleMenu={setIsMobileMenuOpen} />
 
-          <DesktopNavbarLinks isLoggedIn={isLoggedIn} />
+          <DesktopNavbarLinks providers={providers} />
         </div>
       </div>
 
-      {isMobileMenuOpen && <MobileNavbarLinks isLoggedIn={isLoggedIn} />}
+      {isMobileMenuOpen && <MobileNavbarLinks providers={providers} />}
     </nav>
   );
 }
 
-function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
+function DesktopNavbarLinks({ providers }: { providers: TAuthProvider }) {
+  const { data: session } = useSession();
   const homeLinkClass = useGetActiveLinkClasses("/");
   const propertiesLinkClass = useGetActiveLinkClasses("/properties");
   const addPropertyLinkClass = useGetActiveLinkClasses("/properties/add");
 
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const profileImage = session?.user?.image;
 
   return (
     <>
@@ -63,7 +79,7 @@ function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
             <Link href='/properties' className={propertiesLinkClass}>
               Properties
             </Link>
-            {isLoggedIn && (
+            {session && (
               <Link href='/properties/add' className={addPropertyLinkClass}>
                 Add Property
               </Link>
@@ -71,17 +87,24 @@ function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
           </div>
         </div>
       </div>
-      {!isLoggedIn && (
+      {!session && (
         <div className='hidden lg:block lg:ml-6'>
           <div className='flex items-center'>
-            <Button className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'>
-              <FaGoogle className='text-white mr-2' />
-              <span>Login or Register</span>
-            </Button>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <Button
+                  key={provider.id}
+                  className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
+                  onClick={() => signIn(provider.id)}
+                >
+                  <FaGoogle className='text-white mr-2' />
+                  <span>Login or Register</span>
+                </Button>
+              ))}
           </div>
         </div>
       )}
-      {isLoggedIn && (
+      {session && (
         <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 bg-red'>
           <Link href='/messages' className='relative group'>
             <button
@@ -108,7 +131,7 @@ function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
               >
                 <span className='absolute -inset-1.5'></span>
                 <span className='sr-only'>Open user menu</span>
-                <Image className='h-8 w-8 rounded-full' src={profileDefault} alt='' />
+                <Image className='h-8 w-8 rounded-full' src={profileImage || profileDefault} alt='' width={40} height={40} />
               </button>
             </div>
 
@@ -133,7 +156,16 @@ function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
                 >
                   Saved Properties
                 </Link>
-                <button className='block px-4 py-2 text-sm text-gray-700' role='menuitem' tabIndex={-1} id='user-menu-item-2'>
+                <button
+                  className='block px-4 py-2 text-sm text-gray-700'
+                  role='menuitem'
+                  tabIndex={-1}
+                  id='user-menu-item-2'
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    signOut();
+                  }}
+                >
                   Sign Out
                 </button>
               </div>
@@ -145,10 +177,12 @@ function DesktopNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 }
 
-function MobileNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
+function MobileNavbarLinks({ providers }: { providers: TAuthProvider }) {
   const homeLinkClass = useGetActiveLinkClasses("/");
   const propertiesLinkClass = useGetActiveLinkClasses("/properties");
   const addPropertyLinkClass = useGetActiveLinkClasses("/properties/add");
+
+  const { data: session } = useSession();
 
   return (
     <div id='mobile-menu'>
@@ -159,15 +193,22 @@ function MobileNavbarLinks({ isLoggedIn }: { isLoggedIn: boolean }) {
         <Link href='/properties' className={propertiesLinkClass}>
           Properties
         </Link>
-        {isLoggedIn ? (
+        {session ? (
           <Link href='/properties/add' className={addPropertyLinkClass}>
             Add Property
           </Link>
         ) : (
-          <Button className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4'>
-            <FaGoogle className='text-white mr-2' />
-            <span>Login or Register</span>
-          </Button>
+          providers &&
+          Object.values(providers).map((provider) => (
+            <Button
+              key={provider.id}
+              className='flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4'
+              onClick={() => signIn(provider.id)}
+            >
+              <FaGoogle className='text-white mr-2' />
+              <span>Login or Register</span>
+            </Button>
+          ))
         )}
       </div>
     </div>
