@@ -1,6 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import toast from "react-hot-toast";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,7 @@ export async function GET(request: NextApiRequest) {
 
     return NextResponse.json(properties);
   } catch (error) {
-    console.log(error);
+    toast.error("Something Went Wrong");
     return NextResponse.json({ message: "Something Went Wrong" });
   }
 }

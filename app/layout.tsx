@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { twMerge } from "tailwind-merge";
 import AuthProvider from "@/components/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <Toaster toastOptions={{ duration: 4000 }} />
         </body>
       </html>
     </AuthProvider>
