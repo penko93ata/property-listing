@@ -27,7 +27,7 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
             if (Array.isArray(field.value) && field.value.length === 0) return {};
             return { onClear: () => field.onChange(clearValue) };
           };
-          const inputProps = { ...field, id, label, ...fieldState, ...getClearFieldMethod(), ...rest, ...controllerRenderProps };
+          const inputProps = { ...field, id, label, ...fieldState, ...getClearFieldMethod(), ...controllerRenderProps, ...rest };
           return <Component {...inputProps} />;
         }}
       />

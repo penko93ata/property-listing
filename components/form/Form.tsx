@@ -5,13 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 interface FormProps<T extends FieldValues> {
-  // TODO: Fix types ( as this problem occurs only on the posting FE, could be from mismatching versions of yup )
-  //   schema: ObjectSchema<unknown, SchemaType, unknown, ""> | any;
   schema: z.ZodType<T>;
   onSubmit: (
-    data: FieldValues,
-    event: React.BaseSyntheticEvent<object, unknown, unknown>,
-    formMethods: UseFormReturn<FieldValues, unknown, undefined>
+    data: T,
+    event: React.BaseSyntheticEvent<object, unknown, unknown> | undefined,
+    formMethods: UseFormReturn<T, unknown, undefined>
   ) => void;
   //   onSubmit: SubmitHandler<T>;
   defaultValues?: DefaultValues<T>;
@@ -28,13 +26,7 @@ export function Form<T extends FieldValues>({ schema, onSubmit, defaultValues, c
     e.stopPropagation();
     // Handle submit returns a function that expects the event as a parameter
     // Included form methods for custom multi submit actions
-    methods.handleSubmit((data, event) =>
-      onSubmit?.(
-        data,
-        event as React.BaseSyntheticEvent<object, unknown, unknown>,
-        methods as UseFormReturn<FieldValues, unknown, undefined>
-      )
-    )(e);
+    methods.handleSubmit((data, event) => onSubmit?.(data, event, methods))(e);
   };
   return (
     <>
