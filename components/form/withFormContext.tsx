@@ -1,5 +1,6 @@
 import { IFormContextInput } from "@/types/form.types";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 export function withFormContext<ComponentPropTypes>(Component: React.ElementType): React.FC<IFormContextInput<ComponentPropTypes>> {
   return function WithFormContext({
@@ -11,11 +12,12 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
     controllerRenderProps,
     isClearable,
     clearValue = "",
+    helperText,
     ...rest
   }: IFormContextInput<ComponentPropTypes>) {
     const { control } = useFormContext();
     return (
-      <Controller
+      <FormField
         name={name}
         control={control}
         defaultValue={defaultValue}
@@ -28,7 +30,17 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
             return { onClear: () => field.onChange(clearValue) };
           };
           const inputProps = { ...field, id, label, ...fieldState, ...getClearFieldMethod(), ...controllerRenderProps, ...rest };
-          return <Component {...inputProps} />;
+          return (
+            // TODO - may need to refactor for checkboxes and radio buttons?
+            <FormItem>
+              <FormLabel>{label}</FormLabel>
+              <FormControl>
+                <Component {...inputProps} />
+              </FormControl>
+              {Boolean(helperText) && <FormDescription>{helperText}</FormDescription>}
+              <FormMessage />
+            </FormItem>
+          );
         }}
       />
     );

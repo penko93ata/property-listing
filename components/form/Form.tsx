@@ -1,8 +1,9 @@
 import React from "react";
-import { FieldValues, useForm, UseFormReturn, DefaultValues, Resolver, FormProvider } from "react-hook-form";
+import { FieldValues, useForm, UseFormReturn, DefaultValues } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Form as UIForm } from "../ui/form";
 
 interface FormProps<T extends FieldValues> {
   schema: z.ZodType<T>;
@@ -30,11 +31,11 @@ export function Form<T extends FieldValues>({ schema, onSubmit, defaultValues, c
   };
   return (
     <>
-      <FormProvider {...form}>
+      <UIForm {...form}>
         <form onSubmit={handleFormSubmit} id={id} className={className}>
           {children}
         </form>
-      </FormProvider>
+      </UIForm>
       {withDebug && <DevTool control={form.control} />}
     </>
   );

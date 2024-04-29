@@ -9,5 +9,6 @@ export type IFormContextInput<T = unknown> = T & {
   controllerRenderProps?: ControllerRenderProps;
   isClearable?: boolean;
   clearValue?: unknown;
+  helperText?: React.ReactNode;
   error?: { message: string };
 };
