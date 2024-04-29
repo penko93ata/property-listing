@@ -19,23 +19,23 @@ interface FormProps<T extends FieldValues> {
   withDebug?: boolean;
 }
 export function Form<T extends FieldValues>({ schema, onSubmit, defaultValues, children, id, className, withDebug = false }: FormProps<T>) {
-  const methods = useForm<T>({ defaultValues, resolver: zodResolver(schema) as Resolver<T> });
+  const form = useForm<T>({ defaultValues, resolver: zodResolver(schema) });
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     // Stop propagation is required to allow nested forms to be submitted without submitting the parent form
     e.stopPropagation();
     // Handle submit returns a function that expects the event as a parameter
     // Included form methods for custom multi submit actions
-    methods.handleSubmit((data, event) => onSubmit?.(data, event, methods))(e);
+    form.handleSubmit((data, event) => onSubmit?.(data, event, form))(e);
   };
   return (
     <>
-      <FormProvider {...methods}>
+      <FormProvider {...form}>
         <form onSubmit={handleFormSubmit} id={id} className={className}>
           {children}
         </form>
       </FormProvider>
-      {withDebug && <DevTool control={methods.control} />}
+      {withDebug && <DevTool control={form.control} />}
     </>
   );
 }
