@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-// import toast from "react-hot-toast";
 
 // GET /api/properties/[id]
 export async function GET(request: NextApiRequest, { params: { id } }: { params: { id: string } }) {
@@ -18,7 +17,10 @@ export async function GET(request: NextApiRequest, { params: { id } }: { params:
 
     return NextResponse.json(property);
   } catch (error) {
-    // toast.error("Something Went Wrong");
-    return NextResponse.json({ message: "Something Went Wrong" });
+    if (error instanceof Error) {
+      return new NextResponse(error.message, { status: 500 });
+    }
+
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

@@ -1,6 +1,5 @@
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-import toast from "react-hot-toast";
 import { PropertiesGetSchema } from "@/types/properties.types";
 import prisma from "@/lib/db";
 
@@ -9,17 +8,19 @@ export async function GET(request: NextApiRequest) {
   try {
     const properties = await prisma.properties.findMany();
 
-    const result = await PropertiesGetSchema.safeParseAsync(properties);
+    // const result = await PropertiesGetSchema.safeParseAsync(properties);
 
-    console.log({ result });
+    // if (!result.success) {
+    //   return NextResponse.json({ message: result.error });
+    // }
 
-    if (!result.success) {
-      return NextResponse.json({ message: result.error });
+    // return NextResponse.json(result.data);
+    return NextResponse.json(properties);
+  } catch (error) {
+    if (error instanceof Error) {
+      return new NextResponse(error.message, { status: 500 });
     }
 
-    return NextResponse.json(result.data);
-  } catch (error) {
-    toast.error("Something Went Wrong");
-    return NextResponse.json({ message: "Something Went Wrong" });
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

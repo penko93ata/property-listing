@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "663137f20f16824dea0bf201"
+  },
+  "email": "atanasovpenko@gmail.com",
+  "username": "Penko Atanasov",
+  "image": "",
+  "createdAt": {
+    "$date": "2024-04-30T18:26:58.699Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-30T18:26:58.699Z"
+  }
+}]

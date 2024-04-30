@@ -31,7 +31,7 @@ export const PropertyAddFormSchema = z.object({
 });
 
 export const PropertyGetSchema = PropertyAddFormSchema.extend({
-  id: z.string(),
+  id: z.string().uuid(),
   owner: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
