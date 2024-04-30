@@ -31,15 +31,16 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
           };
           const inputProps = { ...field, id, label, ...fieldState, ...getClearFieldMethod(), ...controllerRenderProps, ...rest };
           return (
-            // TODO - may need to refactor for checkboxes and radio buttons?
-            <FormItem>
-              <FormLabel>{label}</FormLabel>
-              <FormControl>
-                <Component {...inputProps} />
-              </FormControl>
-              {Boolean(helperText) && <FormDescription>{helperText}</FormDescription>}
-              <FormMessage />
-            </FormItem>
+            // TODO - use jsx below to create separate components for input, select and checkboxes
+            // <FormItem>
+            //   <FormLabel>{label}</FormLabel>
+            //   <FormControl>
+            //     <Component {...inputProps} />
+            //   </FormControl>
+            //   {Boolean(helperText) && <FormDescription>{helperText}</FormDescription>}
+            //   <FormMessage />
+            // </FormItem>
+            <Component {...inputProps} />
           );
         }}
       />
