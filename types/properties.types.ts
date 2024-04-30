@@ -37,6 +37,8 @@ export const PropertyGetSchema = PropertyAddFormSchema.extend({
   updatedAt: z.string(),
 });
 
+export const PropertiesGetSchema = z.array(PropertyGetSchema);
+
 export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
 export type TProperty = z.infer<typeof PropertyGetSchema>;

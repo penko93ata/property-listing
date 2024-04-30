@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import toast from "react-hot-toast";
-import { PropertyGetSchema } from "@/types/properties.types";
+import { PropertiesGetSchema } from "@/types/properties.types";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +11,9 @@ export async function GET(request: NextApiRequest) {
   try {
     const properties = await prisma.properties.findMany();
 
-    const result = await PropertyGetSchema.safeParseAsync(properties);
+    const result = await PropertiesGetSchema.safeParseAsync(properties);
+
+    console.log({ result });
 
     if (!result.success) {
       return NextResponse.json({ message: result.error });
