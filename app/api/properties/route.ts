@@ -1,10 +1,8 @@
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import toast from "react-hot-toast";
 import { PropertiesGetSchema } from "@/types/properties.types";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db";
 
 // GET /api/properties
 export async function GET(request: NextApiRequest) {

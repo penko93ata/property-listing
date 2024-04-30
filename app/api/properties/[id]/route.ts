@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import toast from "react-hot-toast";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/db";
+// import toast from "react-hot-toast";
 
 // GET /api/properties/[id]
 export async function GET(request: NextApiRequest, { params: { id } }: { params: { id: string } }) {
@@ -20,7 +18,7 @@ export async function GET(request: NextApiRequest, { params: { id } }: { params:
 
     return NextResponse.json(property);
   } catch (error) {
-    toast.error("Something Went Wrong");
+    // toast.error("Something Went Wrong");
     return NextResponse.json({ message: "Something Went Wrong" });
   }
 }
