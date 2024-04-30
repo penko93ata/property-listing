@@ -1,9 +1,9 @@
-import { Property, Rates } from "@/types/properties.types";
+import { IProperty, TPropertyRates } from "@/types/properties.types";
 import Image from "next/image";
 import Link from "next/link";
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarker } from "react-icons/fa";
 
-function getRateDisplay(rates: Rates) {
+function getRateDisplay(rates: TPropertyRates) {
   if (rates.monthly) {
     return `$${rates.monthly.toLocaleString()}/mo`;
   }
@@ -13,7 +13,7 @@ function getRateDisplay(rates: Rates) {
   return `$${rates.nightly?.toLocaleString()}/night`;
 }
 
-export default function PropertyCard({ property }: Readonly<{ property: Property }>) {
+export default function PropertyCard({ property }: Readonly<{ property: IProperty }>) {
   return (
     <div className='rounded-xl shadow-md relative'>
       <Image

@@ -1,38 +1,10 @@
 import { z } from "zod";
 
-export type Property = {
-  id: string;
-  owner: string;
-  name: string;
-  type: string;
-  description: string;
-  location: {
-    street: string;
-    city: string;
-    state: string;
-    zipcode: string;
-  };
-  beds: number;
-  baths: number;
-  square_feet: number;
-  amenities: string[];
-  rates: Rates;
-  seller_info: {
-    name: string;
-    phone: string;
-    email: string;
-  };
-  images: string[];
-  isFeatured: boolean;
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type Rates = {
-  weekly?: number;
-  monthly?: number;
-  nightly?: number;
-};
+const PropertyRatesSchema = z.object({
+  weekly: z.number().optional(),
+  monthly: z.number().optional(),
+  nightly: z.number().optional(),
+});
 
 const PropertyAddFormSchema = z.object({
   name: z.string().min(2, { message: getErrorMessages().min(2) }),
@@ -48,22 +20,19 @@ const PropertyAddFormSchema = z.object({
   baths: z.number(),
   square_feet: z.number(),
   amenities: z.array(z.string()).optional(),
-  rates: z.object({
-    weekly: z.number().optional(),
-    monthly: z.number().optional(),
-    nightly: z.number().optional(),
-  }),
+  rates: PropertyRatesSchema,
   seller_info: z.object({
     name: z.string().min(2, { message: getErrorMessages().min(2) }),
     phone: z.string().min(2, { message: getErrorMessages().min(2) }),
     email: z.string().email(),
   }),
-  images: z.array(z.string()).optional(),
+  images: z.array(z.string()),
   isFeatured: z.boolean().optional(),
 });
 
-export type TPropertyAddFormValues = z.infer<typeof PropertyAddFormSchema>;
-export interface IProperty extends TPropertyAddFormValues {
+export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
+export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
+export interface IProperty extends TPropertyAddFormState {
   id: string;
   owner: string;
   createdAt: string;

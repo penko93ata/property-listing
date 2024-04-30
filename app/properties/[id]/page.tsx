@@ -1,12 +1,12 @@
 import PropertyDetails from "@/components/PropertyDetails";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
-import { Property } from "@/types/properties.types";
+import { IProperty } from "@/types/properties.types";
 import { fetchProperty } from "@/utils/requests";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
 export default async function PropertyPage({ params: { id } }: { params: { id: string } }) {
-  const property: Property = await fetchProperty(id);
+  const property: IProperty = await fetchProperty(id);
 
   if (!property) {
     return <h1 className='text-center text-2xl font-bold mt-10'>Property Not Found</h1>;

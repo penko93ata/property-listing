@@ -1,10 +1,10 @@
-import { Property } from "@/types/properties.types";
+import { IProperty } from "@/types/properties.types";
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
 import { fetchProperties } from "@/utils/requests";
 
 export default async function HomeProperties() {
-  const properties: Property[] = await fetchProperties();
+  const properties: IProperty[] = await fetchProperties();
   const recentProperties = properties.sort(() => Math.random() - Math.random()).slice(0, 3);
 
   return (
@@ -16,7 +16,7 @@ export default async function HomeProperties() {
             {recentProperties.length === 0 ? (
               <p>No Properties Found</p>
             ) : (
-              recentProperties.map((property) => <PropertyCard key={property.id} property={property as Property} />)
+              recentProperties.map((property) => <PropertyCard key={property.id} property={property} />)
             )}
           </div>
         </div>
