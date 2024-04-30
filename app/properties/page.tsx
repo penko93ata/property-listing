@@ -1,12 +1,12 @@
 import PropertyCard from "@/components/PropertyCard";
-import { IProperty } from "@/types/properties.types";
+import { TProperty } from "@/types/properties.types";
 import { fetchProperties } from "@/utils/requests";
 // import { Prisma } from "@prisma/client";
 // import type { properties } from "@prisma/client";
 
 export default async function Properties() {
   // TODO - figure out correct type
-  const properties: IProperty[] = await fetchProperties();
+  const properties: TProperty[] = await fetchProperties();
 
   // Sort properties by date
   const sortedProperties = properties.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

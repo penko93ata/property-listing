@@ -1,7 +1,7 @@
-import { IProperty } from "@/types/properties.types";
+import { TProperty } from "@/types/properties.types";
 import { FaBed, FaBath, FaRulerCombined, FaTimes, FaCheck, FaMapMarker } from "react-icons/fa";
 
-export default function PropertyDetails({ property }: { property: IProperty }) {
+export default function PropertyDetails({ property }: { property: TProperty }) {
   return (
     <main>
       <div className='bg-white p-6 rounded-lg shadow-md text-center md:text-left'>

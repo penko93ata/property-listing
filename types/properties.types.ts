@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-const PropertyRatesSchema = z.object({
+export const PropertyRatesSchema = z.object({
   weekly: z.number().optional(),
   monthly: z.number().optional(),
   nightly: z.number().optional(),
 });
 
-const PropertyAddFormSchema = z.object({
+export const PropertyAddFormSchema = z.object({
   name: z.string().min(2, { message: getErrorMessages().min(2) }),
   type: z.string().min(2, { message: getErrorMessages().min(2) }),
   description: z.string().min(2, { message: getErrorMessages().min(10) }),
@@ -30,14 +30,16 @@ const PropertyAddFormSchema = z.object({
   isFeatured: z.boolean().optional(),
 });
 
+export const PropertyGetSchema = PropertyAddFormSchema.extend({
+  id: z.string(),
+  owner: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
 export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
-export interface IProperty extends TPropertyAddFormState {
-  id: string;
-  owner: string;
-  createdAt: string;
-  updatedAt: string;
-}
+export type TProperty = z.infer<typeof PropertyGetSchema>;
 
 function getErrorMessages() {
   return {
