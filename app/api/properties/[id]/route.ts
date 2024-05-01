@@ -1,6 +1,7 @@
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { PropertyGetSchema } from "@/types/properties.types";
 
 // GET /api/properties/[id]
 export async function GET(request: NextApiRequest, { params: { id } }: { params: { id: string } }) {
@@ -15,7 +16,13 @@ export async function GET(request: NextApiRequest, { params: { id } }: { params:
       return NextResponse.json({ message: "Property Not Found" }, { status: 404 });
     }
 
-    return NextResponse.json(property);
+    const result = await PropertyGetSchema.safeParseAsync(property);
+
+    if (!result.success) {
+      return NextResponse.json({ message: result.error });
+    }
+
+    return NextResponse.json(result.data);
   } catch (error) {
     if (error instanceof Error) {
       return new NextResponse(error.message, { status: 500 });
