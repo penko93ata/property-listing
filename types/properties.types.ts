@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const PropertyRatesSchema = z.object({
-  weekly: z.number().optional(),
-  monthly: z.number().optional(),
-  nightly: z.number().optional(),
+  weekly: z.number(),
+  monthly: z.number().nullable().optional(),
+  nightly: z.number().nullable().optional(),
 });
 
 export const PropertyAddFormSchema = z.object({
@@ -31,10 +31,10 @@ export const PropertyAddFormSchema = z.object({
 });
 
 export const PropertyGetSchema = PropertyAddFormSchema.extend({
-  id: z.string().uuid(),
+  id: z.string().regex(/^[0-9a-f]{24}$/),
   owner: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const PropertiesGetSchema = z.array(PropertyGetSchema);

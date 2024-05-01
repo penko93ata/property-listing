@@ -8,14 +8,13 @@ export async function GET(request: NextApiRequest) {
   try {
     const properties = await prisma.properties.findMany();
 
-    // const result = await PropertiesGetSchema.safeParseAsync(properties);
+    const result = await PropertiesGetSchema.safeParseAsync(properties);
 
-    // if (!result.success) {
-    //   return NextResponse.json({ message: result.error });
-    // }
+    if (!result.success) {
+      return NextResponse.json({ message: result.error });
+    }
 
-    // return NextResponse.json(result.data);
-    return NextResponse.json(properties);
+    return NextResponse.json(result.data);
   } catch (error) {
     if (error instanceof Error) {
       return new NextResponse(error.message, { status: 500 });
