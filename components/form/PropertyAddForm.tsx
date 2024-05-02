@@ -1,8 +1,15 @@
+"use client";
+import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties.types";
 import { Button } from "../ui/button";
+import { Form } from "./Form";
+import { FormInput } from "./FormInput";
 
 export default function PropertyAddForm() {
+  const handleSubmit = (data: TPropertyAddFormState) => {
+    console.log(data);
+  };
   return (
-    <form>
+    <Form<TPropertyAddFormState> schema={PropertyAddFormSchema} onSubmit={handleSubmit}>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
 
       <div className='mb-4'>
@@ -29,6 +36,7 @@ export default function PropertyAddForm() {
           placeholder='eg. Beautiful Apartment In Miami'
           required
         />
+        <FormInput name='test' label='test' />
       </div>
       <div className='mb-4'>
         <label htmlFor='description' className='block text-gray-700 font-bold mb-2'>
@@ -203,6 +211,6 @@ export default function PropertyAddForm() {
           Add Property
         </Button>
       </div>
-    </form>
+    </Form>
   );
 }

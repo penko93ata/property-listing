@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import { FieldValues, useForm, UseFormReturn, DefaultValues } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,6 @@ interface FormProps<T extends FieldValues> {
     event: React.BaseSyntheticEvent<object, unknown, unknown> | undefined,
     formMethods: UseFormReturn<T, unknown, undefined>
   ) => void;
-  //   onSubmit: SubmitHandler<T>;
   defaultValues?: DefaultValues<T>;
   children: React.ReactNode;
   id?: string;

@@ -1,3 +1,4 @@
+"use client";
 import { IFormContextInput } from "@/types/form.types";
 import { useFormContext } from "react-hook-form";
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
@@ -8,8 +9,8 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
     id = name,
     label,
     defaultValue = "",
-    // modifyFieldProps,
-    controllerRenderProps,
+    modifyFieldProps,
+    // controllerRenderProps,
     isClearable,
     clearValue = "",
     helperText,
@@ -21,15 +22,25 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field, fieldState }) => {
-          //   const modifiedFieldProps = modifyFieldProps?.(field);
+        render={({ field, fieldState, formState }) => {
+          const modifiedFieldProps = modifyFieldProps?.(field);
           const getClearFieldMethod = () => {
             if (!isClearable) return {};
             if (!field.value) return {};
             if (Array.isArray(field.value) && field.value.length === 0) return {};
             return { onClear: () => field.onChange(clearValue) };
           };
-          const inputProps = { ...field, id, label, ...fieldState, ...getClearFieldMethod(), ...controllerRenderProps, ...rest };
+          const inputProps = {
+            ...field,
+            id,
+            label,
+            ...fieldState,
+            ...formState,
+            ...getClearFieldMethod(),
+            ...modifiedFieldProps,
+            // ...controllerRenderProps,
+            ...rest,
+          };
           return (
             // TODO - use jsx below to create separate components for input, select and checkboxes
             // <FormItem>

@@ -3,10 +3,11 @@ import { ControllerRenderProps } from "react-hook-form";
 export type IFormContextInput<T = unknown> = T & {
   name: string;
   id?: string;
-  label: React.ReactNode;
+  // label: React.ReactNode;
+  label: string;
   defaultValue?: string | unknown;
-  //   modifyFieldProps?: (field: ControllerRenderProps) => { [key: string]: unknown };
-  controllerRenderProps?: ControllerRenderProps;
+  modifyFieldProps?: (field: ControllerRenderProps) => { [key: string]: unknown };
+  // controllerRenderProps?: ControllerRenderProps;
   isClearable?: boolean;
   clearValue?: unknown;
   helperText?: React.ReactNode;
