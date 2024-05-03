@@ -26,30 +26,8 @@ export default function PropertyAddForm() {
           <option value='Other'>Other</option>
         </select>
       </div>
-      <div className='mb-4'>
-        <label className='block text-gray-700 font-bold mb-2'>Listing Name</label>
-        <input
-          type='text'
-          id='name'
-          name='name'
-          className='border rounded w-full py-2 px-3 mb-2'
-          placeholder='eg. Beautiful Apartment In Miami'
-          required
-        />
-        <FormInput name='test' label='test' />
-      </div>
-      <div className='mb-4'>
-        <label htmlFor='description' className='block text-gray-700 font-bold mb-2'>
-          Description
-        </label>
-        <textarea
-          id='description'
-          name='description'
-          className='border rounded w-full py-2 px-3'
-          rows={4}
-          placeholder='Add an optional description of your property'
-        ></textarea>
-      </div>
+      <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
+      <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
 
       <div className='mb-4 bg-blue-50 p-4'>
         <label className='block text-gray-700 font-bold mb-2'>Location</label>
@@ -170,31 +148,9 @@ export default function PropertyAddForm() {
         </div>
       </div>
 
-      <div className='mb-4'>
-        <label htmlFor='seller_name' className='block text-gray-700 font-bold mb-2'>
-          Seller Name
-        </label>
-        <input type='text' id='seller_name' name='seller_info.name.' className='border rounded w-full py-2 px-3' placeholder='Name' />
-      </div>
-      <div className='mb-4'>
-        <label htmlFor='seller_email' className='block text-gray-700 font-bold mb-2'>
-          Seller Email
-        </label>
-        <input
-          type='email'
-          id='seller_email'
-          name='seller_info.email'
-          className='border rounded w-full py-2 px-3'
-          placeholder='Email address'
-          required
-        />
-      </div>
-      <div className='mb-4'>
-        <label htmlFor='seller_phone' className='block text-gray-700 font-bold mb-2'>
-          Seller Phone
-        </label>
-        <input type='tel' id='seller_phone' name='seller_info.phone' className='border rounded w-full py-2 px-3' placeholder='Phone' />
-      </div>
+      <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
+      <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
+      <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
 
       <div className='mb-4'>
         <label htmlFor='images' className='block text-gray-700 font-bold mb-2'>

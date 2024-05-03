@@ -15,7 +15,8 @@ export const PropertyAddFormSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(2, { message: getErrorMessages().min(10) }),
+    .min(2, { message: getErrorMessages().min(10) })
+    .optional(),
   location: z.object({
     street: z
       .string()
