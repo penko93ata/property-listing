@@ -7,14 +7,32 @@ export const PropertyRatesSchema = z.object({
 });
 
 export const PropertyAddFormSchema = z.object({
-  name: z.string().min(2, { message: getErrorMessages().min(2) }),
+  name: z
+    .string()
+    .trim()
+    .min(2, { message: getErrorMessages().min(2) }),
   type: z.string().min(2, { message: getErrorMessages().min(2) }),
-  description: z.string().min(2, { message: getErrorMessages().min(10) }),
+  description: z
+    .string()
+    .trim()
+    .min(2, { message: getErrorMessages().min(10) }),
   location: z.object({
-    street: z.string().min(2, { message: getErrorMessages().min(2) }),
-    city: z.string().min(2, { message: getErrorMessages().min(2) }),
-    state: z.string().min(2, { message: getErrorMessages().min(2) }),
-    zipcode: z.string().min(2, { message: getErrorMessages().min(2) }),
+    street: z
+      .string()
+      .trim()
+      .min(2, { message: getErrorMessages().min(2) }),
+    city: z
+      .string()
+      .trim()
+      .min(2, { message: getErrorMessages().min(2) }),
+    state: z
+      .string()
+      .trim()
+      .min(2, { message: getErrorMessages().min(2) }),
+    zipcode: z
+      .string()
+      .trim()
+      .min(2, { message: getErrorMessages().min(2) }),
   }),
   beds: z.number(),
   baths: z.number(),
@@ -22,9 +40,12 @@ export const PropertyAddFormSchema = z.object({
   amenities: z.array(z.string()).optional(),
   rates: PropertyRatesSchema,
   seller_info: z.object({
-    name: z.string().min(2, { message: getErrorMessages().min(2) }),
+    name: z
+      .string()
+      .trim()
+      .min(2, { message: getErrorMessages().min(2) }),
     phone: z.string().min(2, { message: getErrorMessages().min(2) }),
-    email: z.string().email(),
+    email: z.string().email().trim(),
   }),
   images: z.array(z.string()),
   isFeatured: z.boolean().optional(),
