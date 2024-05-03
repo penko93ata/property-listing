@@ -39,13 +39,9 @@ export function FormInput({
         };
         return (
           <FormItem>
-            <FormLabel className='block text-gray-700 font-bold mb-2'>{label}</FormLabel>
+            <FormLabel>{label}</FormLabel>
             <FormControl>
-              <Input
-                className='border rounded w-full py-2 px-3 mb-2'
-                placeholder={typeof label === "string" ? label : ""}
-                {...inputProps}
-              />
+              <Input placeholder={typeof label === "string" ? label : ""} {...inputProps} />
             </FormControl>
             {Boolean(helperText) && <FormDescription>{helperText}</FormDescription>}
             <FormMessage />
