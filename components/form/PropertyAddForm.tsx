@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Form } from "./Form";
 import { FormInput } from "./FormInput";
 import { FormSelect } from "./FormSelect";
+import { Label } from "../ui/label";
 
 const propetyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
@@ -27,16 +28,12 @@ export default function PropertyAddForm() {
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
       <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
 
-      <div className='mb-4 bg-blue-50 p-4'>
-        <label className='block text-gray-700 font-bold mb-2'>Location</label>
-        {/* <FormInput name='location.street' label='Street' placeholder='Street' /> */}
-        <input type='text' id='street' name='location.street' className='border rounded w-full py-2 px-3 mb-2' placeholder='Street' />
-        {/* <FormInput name='location.city' label='City' placeholder='City' />
-        <FormInput name='location.state' label='State' placeholder='State' />
-        <FormInput name='location.zipcode' label='Zipcode' placeholder='Zipcode' /> */}
-        <input type='text' id='city' name='location.city' className='border rounded w-full py-2 px-3 mb-2' placeholder='City' required />
-        <input type='text' id='state' name='location.state' className='border rounded w-full py-2 px-3 mb-2' placeholder='State' required />
-        <input type='text' id='zipcode' name='location.zipcode' className='border rounded w-full py-2 px-3 mb-2' placeholder='Zipcode' />
+      <div className='bg-blue-50 p-4 flex flex-col gap-4'>
+        <Label>Location</Label>
+        <FormInput name='location.street' placeholder='Street' />
+        <FormInput name='location.city' placeholder='City' />
+        <FormInput name='location.state' placeholder='State' />
+        <FormInput name='location.zipcode' placeholder='Zipcode' />
       </div>
 
       <div className='mb-4 flex flex-wrap'>

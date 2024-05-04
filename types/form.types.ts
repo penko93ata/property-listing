@@ -4,7 +4,7 @@ export type IFormContextInput<T = unknown> = T & {
   name: string;
   id?: string;
   // label: React.ReactNode;
-  label: string;
+  label?: string;
   defaultValue?: string | unknown;
   modifyFieldProps?: (field: ControllerRenderProps) => { [key: string]: unknown };
   // controllerRenderProps?: ControllerRenderProps;

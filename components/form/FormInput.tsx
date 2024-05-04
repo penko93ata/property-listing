@@ -29,7 +29,7 @@ export function FormInput({
         };
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            {Boolean(label) && <FormLabel>{label}</FormLabel>}
             <FormControl>
               <Input placeholder={typeof label === "string" ? label : ""} {...inputProps} />
             </FormControl>
