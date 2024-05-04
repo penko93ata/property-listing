@@ -3,6 +3,18 @@ import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties
 import { Button } from "../ui/button";
 import { Form } from "./Form";
 import { FormInput } from "./FormInput";
+import { FormSelect } from "./FormSelect";
+
+const propetyTypeOptions = [
+  { value: "Apartment", label: "Apartment" },
+  { value: "Studio", label: "Studio" },
+  { value: "Condo", label: "Condo" },
+  { value: "House", label: "House" },
+  { value: "Cabin Or Cottage", label: "Cabin Or Cottage" },
+  { value: "Loft", label: "Loft" },
+  { value: "Room", label: "Room" },
+  { value: "Other", label: "Other" },
+];
 
 export default function PropertyAddForm() {
   const handleSubmit = (data: TPropertyAddFormState) => {
@@ -11,39 +23,23 @@ export default function PropertyAddForm() {
   return (
     <Form<TPropertyAddFormState> schema={PropertyAddFormSchema} onSubmit={handleSubmit}>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
-
-      <div className='mb-4'>
-        <label htmlFor='type' className='block text-gray-700 font-bold mb-2'>
-          Property Type
-        </label>
-        <select id='type' name='type' className='border rounded w-full py-2 px-3' required>
-          <option value='Apartment'>Apartment</option>
-          <option value='Condo'>Condo</option>
-          <option value='House'>House</option>
-          <option value='Cabin Or Cottage'>Cabin or Cottage</option>
-          <option value='Room'>Room</option>
-          <option value='Studio'>Studio</option>
-          <option value='Other'>Other</option>
-        </select>
-      </div>
+      <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
       <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
 
       <div className='mb-4 bg-blue-50 p-4'>
         <label className='block text-gray-700 font-bold mb-2'>Location</label>
+        {/* <FormInput name='location.street' label='Street' placeholder='Street' /> */}
         <input type='text' id='street' name='location.street' className='border rounded w-full py-2 px-3 mb-2' placeholder='Street' />
+        {/* <FormInput name='location.city' label='City' placeholder='City' />
+        <FormInput name='location.state' label='State' placeholder='State' />
+        <FormInput name='location.zipcode' label='Zipcode' placeholder='Zipcode' /> */}
         <input type='text' id='city' name='location.city' className='border rounded w-full py-2 px-3 mb-2' placeholder='City' required />
         <input type='text' id='state' name='location.state' className='border rounded w-full py-2 px-3 mb-2' placeholder='State' required />
         <input type='text' id='zipcode' name='location.zipcode' className='border rounded w-full py-2 px-3 mb-2' placeholder='Zipcode' />
       </div>
 
       <div className='mb-4 flex flex-wrap'>
-        {/* <div className='w-full sm:w-1/3 pr-2'>
-          <label htmlFor='beds' className='block text-gray-700 font-bold mb-2'>
-            Beds
-          </label>
-          <input type='number' id='beds' name='beds' className='border rounded w-full py-2 px-3' required />
-        </div> */}
         <FormInput type='number' name='beds' label='Beds' />
         <FormInput type='number' name='baths' label='Baths' />
         <FormInput type='number' name='square_feet' label='Square Feet' />

@@ -11,8 +11,8 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
     defaultValue = "",
     modifyFieldProps,
     // controllerRenderProps,
-    isClearable,
-    clearValue = "",
+    // isClearable,
+    // clearValue = "",
     helperText,
     ...rest
   }: IFormContextInput<ComponentPropTypes>) {
@@ -22,21 +22,19 @@ export function withFormContext<ComponentPropTypes>(Component: React.ElementType
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field, fieldState, formState }) => {
+        render={({ field }) => {
           const modifiedFieldProps = modifyFieldProps?.(field);
-          const getClearFieldMethod = () => {
-            if (!isClearable) return {};
-            if (!field.value) return {};
-            if (Array.isArray(field.value) && field.value.length === 0) return {};
-            return { onClear: () => field.onChange(clearValue) };
-          };
+          // const getClearFieldMethod = () => {
+          //   if (!isClearable) return {};
+          //   if (!field.value) return {};
+          //   if (Array.isArray(field.value) && field.value.length === 0) return {};
+          //   return { onClear: () => field.onChange(clearValue) };
+          // };
           const inputProps = {
             ...field,
-            id,
-            label,
-            ...fieldState,
-            ...formState,
-            ...getClearFieldMethod(),
+            // id,
+            // label,
+            // ...getClearFieldMethod(),
             ...modifiedFieldProps,
             // ...controllerRenderProps,
             ...rest,

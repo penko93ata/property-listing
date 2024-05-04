@@ -13,3 +13,7 @@ export type IFormContextInput<T = unknown> = T & {
   helperText?: React.ReactNode;
   error?: { message: string };
 };
+
+export type IFormContextSelect<T = unknown> = IFormContextInput<T> & {
+  options: { value: string; label: string }[];
+};

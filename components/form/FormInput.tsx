@@ -10,8 +10,6 @@ export function FormInput({
   label,
   defaultValue = "",
   modifyFieldProps,
-  isClearable,
-  clearValue = "",
   helperText,
   ...rest
 }: IFormContextInput<InputProps>) {
@@ -24,17 +22,9 @@ export function FormInput({
       defaultValue={defaultValue}
       render={({ field }) => {
         const modifiedFieldProps = modifyFieldProps?.(field);
-        // const getClearFieldMethod = () => {
-        //   if (!isClearable) return {};
-        //   if (!field.value) return {};
-        //   if (Array.isArray(field.value) && field.value.length === 0) return {};
-        //   return { onClear: () => field.onChange(clearValue) };
-        // };
         const inputProps = {
           ...field,
-          //   ...getClearFieldMethod(),
           ...modifiedFieldProps,
-          // ...controllerRenderProps,
           ...rest,
         };
         return (
