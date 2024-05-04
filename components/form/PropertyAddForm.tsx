@@ -22,7 +22,7 @@ export default function PropertyAddForm() {
     console.log(data);
   };
   return (
-    <Form<TPropertyAddFormState> schema={PropertyAddFormSchema} onSubmit={handleSubmit}>
+    <Form<TPropertyAddFormState> schema={PropertyAddFormSchema} onSubmit={handleSubmit} className='flex flex-col gap-4'>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
       <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
@@ -36,7 +36,7 @@ export default function PropertyAddForm() {
         <FormInput name='location.zipcode' placeholder='Zipcode' />
       </div>
 
-      <div className='mb-4 flex flex-wrap'>
+      <div className='flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
         <FormInput type='number' name='beds' label='Beds' />
         <FormInput type='number' name='baths' label='Baths' />
         <FormInput type='number' name='square_feet' label='Square Feet' />
@@ -44,7 +44,7 @@ export default function PropertyAddForm() {
 
       <div className='mb-4'>
         <label className='block text-gray-700 font-bold mb-2'>Amenities</label>
-        <div className='grid grid-cols-2 md:grid-cols-3 gap-2'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
           <div>
             <input type='checkbox' id='amenity_wifi' name='amenities' value='Wifi' className='mr-2' />
             <label htmlFor='amenity_wifi'>Wifi</label>
