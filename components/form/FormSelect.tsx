@@ -5,23 +5,13 @@ import { IFormContextSelect } from "@/types/form.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { SelectProps } from "@radix-ui/react-select";
 
-export function FormSelect({
-  name,
-  id = name,
-  label,
-  defaultValue = "",
-  modifyFieldProps,
-  helperText,
-  options,
-  ...rest
-}: IFormContextSelect<SelectProps>) {
+export function FormSelect({ name, id = name, label, modifyFieldProps, helperText, options, ...rest }: IFormContextSelect<SelectProps>) {
   const { control } = useFormContext();
 
   return (
     <FormField
       name={name}
       control={control}
-      defaultValue={defaultValue}
       render={({ field }) => {
         return (
           <FormItem>

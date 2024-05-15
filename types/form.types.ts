@@ -17,3 +17,7 @@ export type IFormContextInput<T = unknown> = T & {
 export type IFormContextSelect<T = unknown> = IFormContextInput<T> & {
   options: { value: string; label: string }[];
 };
+
+export type IFormContextCheckboxGroup<T = unknown> = Pick<IFormContextInput<T>, "name" | "label" | "helperText"> & {
+  items: { id: string; label: string }[];
+};

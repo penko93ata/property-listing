@@ -5,6 +5,7 @@ import { Form } from "./Form";
 import { FormInput } from "./FormInput";
 import { FormSelect } from "./FormSelect";
 import { Label } from "../ui/label";
+import { FormCheckboxGroup } from "./FormCheckboxGroup";
 
 const propetyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
@@ -15,6 +16,24 @@ const propetyTypeOptions = [
   { value: "Loft", label: "Loft" },
   { value: "Room", label: "Room" },
   { value: "Other", label: "Other" },
+];
+
+const amenitiesItems = [
+  { id: "amenity_wifi", label: "Wifi" },
+  { id: "amenity_kitchen", label: "Full Kitchen" },
+  { id: "amenity_washer_dryer", label: "Washer & Dryer" },
+  { id: "amenity_free_parking", label: "Free Parking" },
+  { id: "amenity_pool", label: "Swimming Pool" },
+  { id: "amenity_hot_tub", label: "Hot Tub" },
+  { id: "amenity_24_7_security", label: "24/7 Security" },
+  { id: "amenity_wheelchair_accessible", label: "Wheelchair Accessible" },
+  { id: "amenity_elevator_access", label: "Elevator Access" },
+  { id: "amenity_dishwasher", label: "Dishwasher" },
+  { id: "amenity_gym_fitness_center", label: "Gym/Fitness Center" },
+  { id: "amenity_air_conditioning", label: "Air Conditioning" },
+  { id: "amenity_balcony_patio", label: "Balcony/Patio" },
+  { id: "amenity_smart_tv", label: "Smart TV" },
+  { id: "amenity_coffee_maker", label: "Coffee Maker" },
 ];
 
 export default function PropertyAddForm() {
@@ -42,7 +61,7 @@ export default function PropertyAddForm() {
         <FormInput type='number' name='square_feet' label='Square Feet' />
       </div>
 
-      <div className='mb-4'>
+      {/* <div className='mb-4'>
         <label className='block text-gray-700 font-bold mb-2'>Amenities</label>
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
           <div>
@@ -106,7 +125,8 @@ export default function PropertyAddForm() {
             <label htmlFor='amenity_coffee_maker'>Coffee Maker</label>
           </div>
         </div>
-      </div>
+      </div> */}
+      <FormCheckboxGroup name='amenities' label='Amenities' items={amenitiesItems} />
 
       <div className='mb-4 bg-blue-50 p-4'>
         <label className='block text-gray-700 font-bold mb-2'>Rates (Leave blank if not applicable)</label>
@@ -120,13 +140,7 @@ export default function PropertyAddForm() {
       <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
-
-      <div className='mb-4'>
-        <label htmlFor='images' className='block text-gray-700 font-bold mb-2'>
-          Images (Select up to 4 images)
-        </label>
-        <input type='file' id='images' name='images' className='border rounded w-full py-2 px-3' accept='image/*' multiple />
-      </div>
+      <FormInput type='file' name='images' label='Images (Select up to 4 images)' accept='image/*' multiple />
 
       <div>
         <Button
