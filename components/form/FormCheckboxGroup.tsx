@@ -21,9 +21,11 @@ export function FormCheckboxGroup({ name, label, helperText, items }: IFormConte
               <FormLabel className='text-base'>{label}</FormLabel>
               {Boolean(helperText) && <FormDescription>Select the items you want to display in the sidebar.</FormDescription>}
             </div>
-            {items.map((item) => (
-              <FormCheckbox key={item.id} item={item} name={name} />
-            ))}
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
+              {items.map((item) => (
+                <FormCheckbox key={item.id} item={item} name={name} />
+              ))}
+            </div>
             <FormMessage />
           </FormItem>
         );
