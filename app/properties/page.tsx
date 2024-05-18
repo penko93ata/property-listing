@@ -5,7 +5,6 @@ import { fetchProperties } from "@/utils/requests";
 // import type { properties } from "@prisma/client";
 
 export default async function Properties() {
-  // TODO - figure out correct type
   const properties: TProperty[] = await fetchProperties();
 
   // Sort properties by date

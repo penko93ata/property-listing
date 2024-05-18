@@ -13,7 +13,8 @@ export type IFormCheckbox = {
 };
 
 export function FormCheckbox({ item, name }: IFormCheckbox) {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
+  console.log({ values: getValues() });
   return (
     <FormField
       key={item.id}

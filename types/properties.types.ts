@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 export const PropertyRatesSchema = z.object({
-  weekly: z.number(),
-  monthly: z.number().nullable().optional(),
-  nightly: z.number().nullable().optional(),
+  // TODO - Figure out correct zod type here
+  weekly: z.coerce.number().or(z.string()),
+  monthly: z.coerce.number().or(z.string()).optional(),
+  nightly: z.coerce.number().or(z.string()).optional(),
 });
 
 export const PropertyAddFormSchema = z.object({
@@ -35,9 +36,9 @@ export const PropertyAddFormSchema = z.object({
       .trim()
       .min(2, { message: getErrorMessages().min(2) }),
   }),
-  beds: z.number(),
-  baths: z.number(),
-  square_feet: z.number(),
+  beds: z.coerce.number().or(z.string()),
+  baths: z.coerce.number().or(z.string()),
+  square_feet: z.coerce.number().or(z.string()),
   amenities: z.array(z.string()).optional(),
   rates: PropertyRatesSchema,
   seller_info: z.object({
