@@ -1,4 +1,5 @@
 import PropertyCard from "@/components/PropertyCard";
+import Spinner from "@/components/Spinner";
 import { TProperty } from "@/types/properties.types";
 import { fetchProperties } from "@/utils/requests";
 // import { Prisma } from "@prisma/client";
