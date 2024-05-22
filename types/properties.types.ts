@@ -1,10 +1,39 @@
 import { z } from "zod";
 
+const getOptionalNumberSchema = () =>
+  z
+    .union([
+      z.coerce
+        .number()
+        .int({
+          message: "must be a whole number",
+        })
+        .positive({
+          message: "must be positive",
+        }),
+      z.literal(""),
+    ])
+    .optional();
+
+const getRequiredNumberSchema = () =>
+  z.union([
+    z.coerce
+      .number()
+      .int({
+        message: "must be a whole number",
+      })
+      .positive({
+        message: "must be positive",
+      }),
+    z.literal("").refine(() => false, {
+      message: "is required",
+    }),
+  ]);
+
 export const PropertyRatesSchema = z.object({
-  // TODO - Figure out correct zod type here
-  weekly: z.coerce.number().or(z.string()),
-  monthly: z.coerce.number().or(z.string()).optional(),
-  nightly: z.coerce.number().or(z.string()).optional(),
+  weekly: getRequiredNumberSchema(),
+  monthly: getOptionalNumberSchema(),
+  nightly: getOptionalNumberSchema(),
 });
 
 export const PropertyAddFormSchema = z.object({
@@ -36,9 +65,9 @@ export const PropertyAddFormSchema = z.object({
       .trim()
       .min(2, { message: getErrorMessages().min(2) }),
   }),
-  beds: z.coerce.number().or(z.string()),
-  baths: z.coerce.number().or(z.string()),
-  square_feet: z.coerce.number().or(z.string()),
+  beds: getRequiredNumberSchema(),
+  baths: getRequiredNumberSchema(),
+  square_feet: getRequiredNumberSchema(),
   amenities: z.array(z.string()).optional(),
   rates: PropertyRatesSchema,
   seller_info: z.object({
