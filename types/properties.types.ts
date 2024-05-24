@@ -8,9 +8,7 @@ const getOptionalNumberSchema = () =>
         .int({
           message: "must be a whole number",
         })
-        .positive({
-          message: "must be positive",
-        }),
+        .gte(0),
       z.literal(""),
     ])
     .optional();
@@ -22,9 +20,7 @@ const getRequiredNumberSchema = () =>
       .int({
         message: "must be a whole number",
       })
-      .positive({
-        message: "must be positive",
-      }),
+      .gte(0),
     z.literal("").refine(() => false, {
       message: "is required",
     }),

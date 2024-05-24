@@ -16,6 +16,10 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 60, // 30 minutes
+  },
   callbacks: {
     // Invoked on successful sign in
     async signIn({ profile }) {
