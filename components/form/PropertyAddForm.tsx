@@ -7,6 +7,8 @@ import { FormSelect } from "./FormSelect";
 import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { propertyAddFormDefaultValues } from "./utils";
+import { onAddPropertySubmit } from "@/app/actions/addProperty";
+import { useFormContext, useFormState } from "react-hook-form";
 
 const propetyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
@@ -38,16 +40,25 @@ const amenitiesItems = [
 ];
 
 export default function PropertyAddForm() {
-  const handleSubmit = (data: TPropertyAddFormState) => {
-    console.log(data);
-  };
   return (
     <Form<TPropertyAddFormState>
       schema={PropertyAddFormSchema}
       defaultValues={propertyAddFormDefaultValues}
-      onSubmit={handleSubmit}
+      onSubmitAction={onAddPropertySubmit}
       className='flex flex-col gap-4'
+      encType='multipart/form-data'
     >
+      <PropertyAddFormContent />
+    </Form>
+  );
+}
+
+function PropertyAddFormContent() {
+  const { control, getValues } = useFormContext<TPropertyAddFormState>();
+  const { errors } = useFormState({ control });
+  console.log({ formValues: getValues(), errors });
+  return (
+    <>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
       <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
@@ -91,6 +102,6 @@ export default function PropertyAddForm() {
           Add Property
         </Button>
       </div>
-    </Form>
+    </>
   );
 }

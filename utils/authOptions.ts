@@ -43,9 +43,7 @@ export const authOptions: AuthOptions = {
       // 1. Get user from database
       const user = await prisma.users.findUnique({ where: { email: session.user?.email ?? "" } });
       // 2. Assign the user id to the session
-      if (session?.user?.email) {
-        session.user.email = user?.email;
-      }
+      session.user.id = user?.id.toString() ?? "";
       // 3. Return the session
       return session;
     },
