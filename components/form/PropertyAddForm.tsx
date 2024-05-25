@@ -94,14 +94,12 @@ function PropertyAddFormContent() {
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
       <FormInput type='file' name='images' label='Images (Select up to 4 images)' accept='image/*' multiple />
 
-      <div>
-        <Button
-          className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
-          type='submit'
-        >
-          Add Property
-        </Button>
-      </div>
+      <Button
+        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
+        type='submit'
+      >
+        Add Property
+      </Button>
     </>
   );
 }
