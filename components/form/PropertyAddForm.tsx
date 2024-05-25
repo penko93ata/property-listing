@@ -8,7 +8,6 @@ import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { propertyAddFormDefaultValues } from "./utils";
 import { onAddPropertySubmit } from "@/app/actions/addProperty";
-import { useFormContext, useFormState } from "react-hook-form";
 
 const propetyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
@@ -44,7 +43,7 @@ export default function PropertyAddForm() {
     <Form<TPropertyAddFormState>
       schema={PropertyAddFormSchema}
       defaultValues={propertyAddFormDefaultValues}
-      onSubmitAction={onAddPropertySubmit}
+      onSubmit={onAddPropertySubmit}
       className='flex flex-col gap-4'
       encType='multipart/form-data'
     >
@@ -54,9 +53,6 @@ export default function PropertyAddForm() {
 }
 
 function PropertyAddFormContent() {
-  const { control, getValues } = useFormContext<TPropertyAddFormState>();
-  const { errors } = useFormState({ control });
-  console.log({ formValues: getValues(), errors });
   return (
     <>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
