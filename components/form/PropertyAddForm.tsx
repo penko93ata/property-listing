@@ -8,6 +8,7 @@ import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { propertyAddFormDefaultValues } from "./utils";
 import { onAddPropertySubmit } from "@/app/actions/addProperty";
+import { useFormContext, useFormState } from "react-hook-form";
 
 const propetyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
@@ -39,11 +40,13 @@ const amenitiesItems = [
 ];
 
 export default function PropertyAddForm() {
+  const handleSubmit = async (data: TPropertyAddFormState) => await onAddPropertySubmit(data);
+
   return (
     <Form<TPropertyAddFormState>
       schema={PropertyAddFormSchema}
       defaultValues={propertyAddFormDefaultValues}
-      onSubmit={onAddPropertySubmit}
+      onSubmit={handleSubmit}
       className='flex flex-col gap-4'
       encType='multipart/form-data'
     >
@@ -53,6 +56,9 @@ export default function PropertyAddForm() {
 }
 
 function PropertyAddFormContent() {
+  const { control } = useFormContext();
+  const { isSubmitting } = useFormState({ control });
+
   return (
     <>
       <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
@@ -93,6 +99,7 @@ function PropertyAddFormContent() {
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
         type='submit'
+        disabled={isSubmitting}
       >
         Add Property
       </Button>

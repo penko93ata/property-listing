@@ -4,6 +4,7 @@ import { authOptions } from "@/utils/authOptions";
 import { getServerSession } from "next-auth";
 
 export async function getSessionUser() {
+  console.log("get session user");
   try {
     const session = await getServerSession(authOptions);
 
