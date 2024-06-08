@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const { required } = getErrorMessages();
+
 const getOptionalNumberSchema = () =>
   z
     .union([
@@ -33,33 +35,18 @@ export const PropertyRatesSchema = z.object({
 });
 
 export const PropertyAddFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, { message: getErrorMessages().min(2) }),
-  type: z.string().min(2, { message: getErrorMessages().min(2) }),
+  name: z.string().trim().min(1, { message: required }),
+  type: z.string().min(1, { message: required }),
   description: z
     .string()
     .trim()
-    .min(2, { message: getErrorMessages().min(10) })
+    .min(1, { message: getErrorMessages().min(10) })
     .optional(),
   location: z.object({
-    street: z
-      .string()
-      .trim()
-      .min(2, { message: getErrorMessages().min(2) }),
-    city: z
-      .string()
-      .trim()
-      .min(2, { message: getErrorMessages().min(2) }),
-    state: z
-      .string()
-      .trim()
-      .min(2, { message: getErrorMessages().min(2) }),
-    zipcode: z
-      .string()
-      .trim()
-      .min(2, { message: getErrorMessages().min(2) }),
+    street: z.string().trim().min(1, { message: required }),
+    city: z.string().trim().min(1, { message: required }),
+    state: z.string().trim().min(1, { message: required }),
+    zipcode: z.string().trim().min(1, { message: required }),
   }),
   beds: getRequiredNumberSchema(),
   baths: getRequiredNumberSchema(),
@@ -67,11 +54,8 @@ export const PropertyAddFormSchema = z.object({
   amenities: z.array(z.string()).optional(),
   rates: PropertyRatesSchema,
   seller_info: z.object({
-    name: z
-      .string()
-      .trim()
-      .min(2, { message: getErrorMessages().min(2) }),
-    phone: z.string().min(2, { message: getErrorMessages().min(2) }),
+    name: z.string().trim().min(1, { message: required }),
+    phone: z.string().min(1, { message: required }),
     email: z.string().email().trim(),
   }),
   images: z.array(z.string()),
@@ -93,6 +77,7 @@ export type TProperty = z.infer<typeof PropertyGetSchema>;
 
 function getErrorMessages() {
   return {
+    required: "Field is required",
     min: (minLength: number) => `Field must be at least ${minLength} characters long`,
   };
 }
