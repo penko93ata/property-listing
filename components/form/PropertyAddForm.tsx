@@ -1,5 +1,10 @@
 "use client";
-import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties.types";
+import {
+  PropertyAddFormSchema,
+  PropertyAddParsedSchema,
+  TPropertyAddFormParsedState,
+  TPropertyAddFormState,
+} from "@/types/properties.types";
 import { Button } from "../ui/button";
 import { Form } from "./Form";
 import { FormInput } from "./FormInput";
@@ -10,13 +15,16 @@ import { propertyAddFormDefaultValues } from "./utils";
 import { onAddPropertySubmit } from "@/app/actions/addProperty";
 import { useFormContext, useFormState } from "react-hook-form";
 import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
+import React from "react";
 
 export default function PropertyAddForm() {
-  const handleSubmit = async (data: TPropertyAddFormState) => await onAddPropertySubmit(data);
+  const handleSubmit = async (data: TPropertyAddFormState) => {
+    return await onAddPropertySubmit(data);
+  };
 
   return (
-    <Form<TPropertyAddFormState>
-      schema={PropertyAddFormSchema}
+    <Form<TPropertyAddFormParsedState>
+      schema={PropertyAddParsedSchema}
       defaultValues={propertyAddFormDefaultValues}
       onSubmit={handleSubmit}
       className='flex flex-col gap-4'
@@ -28,8 +36,11 @@ export default function PropertyAddForm() {
 }
 
 function PropertyAddFormContent() {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
   const { isSubmitting } = useFormState({ control });
+
+  const formValues = getValues();
+  console.log({ formValues });
 
   return (
     <>
@@ -66,7 +77,17 @@ function PropertyAddFormContent() {
       <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
-      <FormInput type='file' name='images' label='Images (Select up to 4 images)' accept='image/*' multiple />
+      <FormInput
+        type='file'
+        name='images'
+        label='Images (Select up to 4 images)'
+        accept='image/*'
+        multiple
+        modifyFieldProps={(field) => ({
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files),
+        })}
+        value={undefined}
+      />
 
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'

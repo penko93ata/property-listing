@@ -5,6 +5,7 @@ import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties
 import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function onAddPropertySubmit(data: TPropertyAddFormState) {
   const sessionUser = await getSessionUser();
@@ -30,20 +31,49 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
     };
   }
 
-  const newProperty = await prisma.properties.create({
+  console.log({
     data: {
       ...parsedData.data,
-      beds: data.beds ? data.beds : 0,
-      baths: data.baths ? data.baths : 0,
-      square_feet: data.square_feet ? data.square_feet : 0,
+      beds: parseNumberEmptyString(data.beds),
+      baths: parseNumberEmptyString(data.baths),
+      square_feet: parseNumberEmptyString(data.square_feet),
       rates: {
-        weekly: data.rates.weekly ? data.rates.weekly : 0,
-        nightly: data.rates.nightly ? data.rates.nightly : 0,
-        monthly: data.rates.monthly ? data.rates.monthly : 0,
+        weekly: parseNumberEmptyString(data.rates.weekly),
+        nightly: parseNumberEmptyString(data.rates.nightly),
+        monthly: parseNumberEmptyString(data.rates.monthly),
       },
+      images: data.images,
+      amenities: data.amenities,
       owner: userId.toString(),
       description: data.description ? data.description : "",
     },
   });
+
+  const newProperty = await prisma.properties.create({
+    data: {
+      ...parsedData.data,
+      beds: parseNumberEmptyString(data.beds),
+      baths: parseNumberEmptyString(data.baths),
+      square_feet: parseNumberEmptyString(data.square_feet),
+      rates: {
+        weekly: parseNumberEmptyString(data.rates.weekly),
+        nightly: parseNumberEmptyString(data.rates.nightly),
+        monthly: parseNumberEmptyString(data.rates.monthly),
+      },
+      images: data.images,
+      amenities: data.amenities,
+      owner: userId.toString(),
+      description: data.description ? data.description : "",
+    },
+  });
+  revalidatePath("/", "layout");
   return redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty.id}`);
+}
+
+function parseNumberEmptyString(value: string | number | undefined): number {
+  if (value === undefined || value === "") {
+    return 0;
+  }
+
+  return Number(value);
 }
