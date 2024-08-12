@@ -89,6 +89,7 @@ export const PropertyAddFormSchema = z.object({
 
 export const PropertyAddParsedSchema = PropertyAddFormSchema.extend({
   images: z.array(z.string()).min(1, { message: "At least one image is required" }).max(4, { message: "Maximum of 4 images allowed" }),
+  owner: z.string(),
 });
 
 export const PropertyGetSchema = PropertyAddFormSchema.extend({

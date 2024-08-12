@@ -1,27 +1,20 @@
 "use client";
-import {
-  PropertyAddFormSchema,
-  PropertyAddParsedSchema,
-  TPropertyAddFormParsedState,
-  TPropertyAddFormState,
-} from "@/types/properties.types";
-import { Button } from "../ui/button";
+import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties.types";
 import { Form } from "./Form";
-import { FormInput } from "./FormInput";
-import { FormSelect } from "./FormSelect";
-import { Label } from "../ui/label";
-import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { propertyAddFormDefaultValues } from "./utils";
 import { onAddPropertySubmit } from "@/app/actions/addProperty";
-import { useFormContext, useFormState, useWatch } from "react-hook-form";
-import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
-import React from "react";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
+import { PropertyAddFormContent } from "./PropertyAddFormContent";
+import { omit } from "lodash";
 
 export default function PropertyAddForm() {
   const handleSubmit = async (data: TPropertyAddFormState) => {
-    return await onAddPropertySubmit(data);
+    const formData = new FormData();
+    for (let i = 0; i < data.images.length; i++) {
+      formData.append("images", data.images[i]);
+    }
+    // formData.append("images", data.images[0]);
+
+    return await onAddPropertySubmit(omit(data, "images"), formData);
   };
 
   return (
@@ -34,105 +27,5 @@ export default function PropertyAddForm() {
     >
       <PropertyAddFormContent />
     </Form>
-  );
-}
-
-function PropertyAddFormContent() {
-  const { control, register } = useFormContext();
-  const { isSubmitting } = useFormState({ control });
-  const watchedImages = useWatch({ control, name: "images" });
-  const fileRef = register("images");
-
-  console.log({ watchedImages });
-
-  return (
-    <>
-      <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
-      <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
-      <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
-      <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
-
-      <div className='bg-blue-50 p-4 flex flex-col gap-4'>
-        <Label>Location</Label>
-        <FormInput name='location.street' placeholder='Street' />
-        <FormInput name='location.city' placeholder='City' />
-        <FormInput name='location.state' placeholder='State' />
-        <FormInput name='location.zipcode' placeholder='Zipcode' />
-      </div>
-
-      <div className='flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
-        <FormInput type='number' name='beds' label='Beds' />
-        <FormInput type='number' name='baths' label='Baths' />
-        <FormInput type='number' name='square_feet' label='Square Feet' />
-      </div>
-
-      <FormCheckboxGroup name='amenities' label='Amenities' items={amenitiesItems} />
-
-      <div className='mb-4 bg-blue-50 p-4'>
-        <label className='block text-gray-700 font-bold mb-2'>Rates (Leave blank if not applicable)</label>
-        <div className='flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
-          <FormInput type='number' name='rates.weekly' label='Weekly' />
-          <FormInput type='number' name='rates.monthly' label='Monthly' />
-          <FormInput type='number' name='rates.nightly' label='Nightly' />
-        </div>
-      </div>
-
-      <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
-      <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
-      <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
-      {/* <FormInput
-        type='file'
-        name='images'
-        label='Images (Select up to 4 images)'
-        accept='image/*'
-        multiple
-        modifyFieldProps={(field) => ({
-          // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files),
-          // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange([...Array.from(e.target.files ?? [])]),
-          onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(Array.from(e.target.files ?? [])),
-          register: fileRef
-        })}
-      /> */}
-      <FormField
-        control={control}
-        name='images'
-        render={({ field }) => {
-          return (
-            <FormItem>
-              <FormLabel>Images (Select up to 4 images)</FormLabel>
-              <FormControl>
-                <Input
-                  type='file'
-                  placeholder='Test test'
-                  multiple
-                  accept='image/*'
-                  {...fileRef}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const { files } = e.target;
-
-                    const updatedImages = watchedImages ? [...watchedImages] : [];
-                    if (!files?.length) return;
-                    for (let i = 0; i < files.length; i++) {
-                      updatedImages.push(files[i]);
-                    }
-
-                    field.onChange(updatedImages);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
-
-      <Button
-        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
-        type='submit'
-        disabled={isSubmitting}
-      >
-        Add Property
-      </Button>
-    </>
   );
 }

@@ -1,14 +1,14 @@
 "use server";
 // TODO - Remove type
 // import { FormStateResponse } from "@/types/form.types";
-import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties.types";
+import { PropertyAddFormSchema, TPropertyAddFormParsedState, TPropertyAddFormState } from "@/types/properties.types";
 import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import cloudinary from "@/config/cloudinary";
 
-export async function onAddPropertySubmit(data: TPropertyAddFormState) {
+export async function onAddPropertySubmit(data: TPropertyAddFormState, formData: FormData) {
   const sessionUser = await getSessionUser();
 
   if (!sessionUser || !sessionUser.userId) {
@@ -19,6 +19,7 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
 
   const { userId } = sessionUser;
   const parsedData = PropertyAddFormSchema.safeParse(data);
+  console.log({ images: formData.get("images") });
 
   if (!parsedData.success) {
     const fields: Record<string, string> = {};
@@ -32,26 +33,11 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
     };
   }
 
-  const newProperty = await prisma.properties.create({
-    data: {
-      ...parsedData.data,
-      beds: parseNumberEmptyString(data.beds),
-      baths: parseNumberEmptyString(data.baths),
-      square_feet: parseNumberEmptyString(data.square_feet),
-      rates: {
-        weekly: parseNumberEmptyString(data.rates.weekly),
-        nightly: parseNumberEmptyString(data.rates.nightly),
-        monthly: parseNumberEmptyString(data.rates.monthly),
-      },
-      amenities: data.amenities,
-      owner: userId.toString(),
-      description: data.description ? data.description : "",
-    },
-  });
-
   const imageUrls = [];
 
-  for (const imageFile of data.images) {
+  const images = formData.getAll("images") as File[];
+
+  for (const imageFile of images) {
     const imageBuffer = await imageFile.arrayBuffer();
     const imageArray = Array.from(new Uint8Array(imageBuffer));
     const imageData = Buffer.from(imageArray);
@@ -67,10 +53,28 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
     imageUrls.push(response.secure_url);
   }
 
-  newProperty.images = imageUrls;
+  const newProperty = {
+    data: {
+      ...parsedData.data,
+      beds: parseNumberEmptyString(data.beds),
+      baths: parseNumberEmptyString(data.baths),
+      square_feet: parseNumberEmptyString(data.square_feet),
+      rates: {
+        weekly: parseNumberEmptyString(data.rates.weekly),
+        nightly: parseNumberEmptyString(data.rates.nightly),
+        monthly: parseNumberEmptyString(data.rates.monthly),
+      },
+      amenities: data.amenities,
+      owner: userId.toString(),
+      description: data.description ? data.description : "",
+      images: imageUrls,
+    },
+  };
+
+  const response = await prisma.properties.create(newProperty);
 
   revalidatePath("/", "layout");
-  return redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty.id}`);
+  return redirect(`${process.env.NEXTAUTH_URL}/properties/${response.id}`);
 }
 
 function parseNumberEmptyString(value: string | number | undefined): number {
