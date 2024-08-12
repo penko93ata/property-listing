@@ -2,7 +2,9 @@ import { z } from "zod";
 
 const { required } = getErrorMessages();
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; // 5MB
+const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
+const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
 const getOptionalNumberSchema = () =>
   z
@@ -36,6 +38,8 @@ export const PropertyRatesSchema = z.object({
   nightly: getOptionalNumberSchema(),
 });
 
+const isServer = typeof window === "undefined";
+
 export const PropertyAddFormSchema = z.object({
   name: z.string().trim().min(1, { message: required }),
   type: z.string().min(1, { message: required }),
@@ -60,23 +64,26 @@ export const PropertyAddFormSchema = z.object({
     phone: z.string().min(1, { message: required }),
     email: z.string().email().trim(),
   }),
-  // images: z.array(z.string()).min(1, { message: "At least one image is required" }).max(4, { message: "Maximum of 4 images allowed" }),
-  images: z
-    .array(z.custom<File>())
-    .min(1, { message: "At least one image is required" })
-    .max(4, { message: "Maximum of 4 images allowed" })
-    .refine(
-      (files) => {
-        // Check if all items in the array are instances of the File object
-        return files.every((file) => file instanceof File);
-      },
-      {
-        // If the refinement fails, throw an error with this message
-        message: "Expected a file",
-      }
-    )
-    .refine((files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE), `File size should be less than ${MAX_UPLOAD_SIZE}mb.`)
-    .transform((files) => files.map((file) => file.name)),
+  // images: z
+  //   .array(z.instanceof(File))
+  //   .min(1, { message: "At least one image is required" })
+  //   .max(4, { message: "Maximum of 4 images allowed" })
+  //   .refine(
+  //     (files) => {
+  //       // Check if all items in the array are instances of the File object
+  //       return files.every((file) => file instanceof File);
+  //     },
+  //     {
+  //       // If the refinement fails, throw an error with this message
+  //       message: "Expected a file",
+  //     }
+  //   )
+  //   .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), `File size should be less than ${MAX_FILE_SIZE}mb.`),
+  // images: z
+  //   .instanceof(FileList)
+  //   .refine((files) => files.length > 0, { message: "At least one image is required" })
+  //   .refine((files) => files.length <= 4, { message: "Maximum of 4 images allowed" }),
+  images: z.any(),
   isFeatured: z.boolean().optional(),
 });
 

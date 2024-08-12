@@ -13,9 +13,11 @@ import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { propertyAddFormDefaultValues } from "./utils";
 import { onAddPropertySubmit } from "@/app/actions/addProperty";
-import { useFormContext, useFormState } from "react-hook-form";
+import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
 import React from "react";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 
 export default function PropertyAddForm() {
   const handleSubmit = async (data: TPropertyAddFormState) => {
@@ -23,8 +25,8 @@ export default function PropertyAddForm() {
   };
 
   return (
-    <Form<TPropertyAddFormParsedState>
-      schema={PropertyAddParsedSchema}
+    <Form<TPropertyAddFormState>
+      schema={PropertyAddFormSchema}
       defaultValues={propertyAddFormDefaultValues}
       onSubmit={handleSubmit}
       className='flex flex-col gap-4'
@@ -36,11 +38,12 @@ export default function PropertyAddForm() {
 }
 
 function PropertyAddFormContent() {
-  const { control, getValues } = useFormContext();
+  const { control, register } = useFormContext();
   const { isSubmitting } = useFormState({ control });
+  const watchedImages = useWatch({ control, name: "images" });
+  const fileRef = register("images");
 
-  const formValues = getValues();
-  console.log({ formValues });
+  console.log({ watchedImages });
 
   return (
     <>
@@ -77,16 +80,50 @@ function PropertyAddFormContent() {
       <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
-      <FormInput
+      {/* <FormInput
         type='file'
         name='images'
         label='Images (Select up to 4 images)'
         accept='image/*'
         multiple
         modifyFieldProps={(field) => ({
-          onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files),
+          // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files),
+          // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange([...Array.from(e.target.files ?? [])]),
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(Array.from(e.target.files ?? [])),
+          register: fileRef
         })}
-        value={undefined}
+      /> */}
+      <FormField
+        control={control}
+        name='images'
+        render={({ field }) => {
+          return (
+            <FormItem>
+              <FormLabel>Images (Select up to 4 images)</FormLabel>
+              <FormControl>
+                <Input
+                  type='file'
+                  placeholder='Test test'
+                  multiple
+                  accept='image/*'
+                  {...fileRef}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const { files } = e.target;
+
+                    const updatedImages = watchedImages ? [...watchedImages] : [];
+                    if (!files?.length) return;
+                    for (let i = 0; i < files.length; i++) {
+                      updatedImages.push(files[i]);
+                    }
+
+                    field.onChange(updatedImages);
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
       />
 
       <Button

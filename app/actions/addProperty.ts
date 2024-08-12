@@ -6,6 +6,7 @@ import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import cloudinary from "@/config/cloudinary";
 
 export async function onAddPropertySubmit(data: TPropertyAddFormState) {
   const sessionUser = await getSessionUser();
@@ -31,24 +32,6 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
     };
   }
 
-  console.log({
-    data: {
-      ...parsedData.data,
-      beds: parseNumberEmptyString(data.beds),
-      baths: parseNumberEmptyString(data.baths),
-      square_feet: parseNumberEmptyString(data.square_feet),
-      rates: {
-        weekly: parseNumberEmptyString(data.rates.weekly),
-        nightly: parseNumberEmptyString(data.rates.nightly),
-        monthly: parseNumberEmptyString(data.rates.monthly),
-      },
-      images: data.images,
-      amenities: data.amenities,
-      owner: userId.toString(),
-      description: data.description ? data.description : "",
-    },
-  });
-
   const newProperty = await prisma.properties.create({
     data: {
       ...parsedData.data,
@@ -60,12 +43,32 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState) {
         nightly: parseNumberEmptyString(data.rates.nightly),
         monthly: parseNumberEmptyString(data.rates.monthly),
       },
-      images: data.images,
       amenities: data.amenities,
       owner: userId.toString(),
       description: data.description ? data.description : "",
     },
   });
+
+  const imageUrls = [];
+
+  for (const imageFile of data.images) {
+    const imageBuffer = await imageFile.arrayBuffer();
+    const imageArray = Array.from(new Uint8Array(imageBuffer));
+    const imageData = Buffer.from(imageArray);
+
+    // Convert to base64
+    const imageBase64 = imageData.toString("base64");
+
+    // Make request to cloudinary
+    const response = await cloudinary.uploader.upload(`data:image/png;base64,${imageBase64}`, {
+      folder: "property-listing",
+    });
+
+    imageUrls.push(response.secure_url);
+  }
+
+  newProperty.images = imageUrls;
+
   revalidatePath("/", "layout");
   return redirect(`${process.env.NEXTAUTH_URL}/properties/${newProperty.id}`);
 }
