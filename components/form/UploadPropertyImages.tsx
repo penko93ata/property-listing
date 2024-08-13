@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Button } from "../ui/button";
 import { FaTrashAlt } from "react-icons/fa";
 
-export function PropertyImages() {
+export function UploadPropertyImages() {
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: "images", keyName: "imageId" });
 

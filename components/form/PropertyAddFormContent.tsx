@@ -7,13 +7,11 @@ import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
 import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { Button } from "../ui/button";
-import { PropertyImages } from "./PropertyImages";
+import { UploadPropertyImages } from "./UploadPropertyImages";
 
 export function PropertyAddFormContent() {
   const { control } = useFormContext();
-  const { isSubmitting, errors } = useFormState({ control });
-
-  console.log({ errors });
+  const { isSubmitting } = useFormState({ control });
 
   return (
     <>
@@ -51,7 +49,7 @@ export function PropertyAddFormContent() {
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
 
-      <PropertyImages />
+      <UploadPropertyImages />
 
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'

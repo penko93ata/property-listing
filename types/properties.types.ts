@@ -62,26 +62,26 @@ export const PropertyAddFormSchema = z.object({
     phone: z.string().min(1, { message: required }),
     email: z.string().email().trim(),
   }),
-  images: z
-    .array(z.instanceof(File))
-    .min(1, { message: "At least one image is required" })
-    .max(4, { message: "Maximum of 4 images allowed" })
-    .refine(
-      (files) => {
-        // Check if all items in the array are instances of the File object
-        return files.every((file) => file instanceof File);
-      },
-      {
-        // If the refinement fails, throw an error with this message
-        message: "Expected a file",
-      }
-    ),
+  // images: z
+  //   .array(z.instanceof(File))
+  //   .min(1, { message: "At least one image is required" })
+  //   .max(4, { message: "Maximum of 4 images allowed" })
+  //   .refine(
+  //     (files) => {
+  //       // Check if all items in the array are instances of the File object
+  //       return files.every((file) => file instanceof File);
+  //     },
+  //     {
+  //       // If the refinement fails, throw an error with this message
+  //       message: "Expected a file",
+  //     }
+  //   ),
   //   .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), `File size should be less than ${MAX_FILE_SIZE}mb.`),
   // images: z
   //   .instanceof(FileList)
   //   .refine((files) => files.length > 0, { message: "At least one image is required" })
   //   .refine((files) => files.length <= 4, { message: "Maximum of 4 images allowed" }),
-  // images: z.any(),
+  images: z.any(),
   isFeatured: z.boolean().optional(),
 });
 

@@ -14,10 +14,9 @@ function getRateDisplay(rates: TPropertyRates) {
 }
 
 export default function PropertyCard({ property }: Readonly<{ property: TProperty }>) {
-  console.log({ images: property.images });
   return (
     <div className='rounded-xl shadow-md relative'>
-      {/* <Image src={property.images[0]} alt={property.name} sizes='100vw' height={0} width={0} className='w-full h-auto rounded-t-xl' /> */}
+      <Image src={property.images[0]} alt={property.name} sizes='100vw' height={0} width={0} className='w-full h-auto rounded-t-xl' />
       <div className='p-4'>
         <div className='text-left md:text-center lg:text-left mb-6'>
           <div className='text-gray-600'>{property.type}</div>
