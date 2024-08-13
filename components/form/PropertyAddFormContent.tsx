@@ -6,18 +6,13 @@ import { FormInput } from "./FormInput";
 import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
 import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { PropertyImages } from "./PropertyImages";
 
 export function PropertyAddFormContent() {
-  const { control, register } = useFormContext();
+  const { control } = useFormContext();
   const { isSubmitting } = useFormState({ control });
   const watchedImages = useWatch({ control, name: "images" });
-  const fileRef = register("images");
-
-  console.log({ watchedImages });
 
   return (
     <>
@@ -54,51 +49,8 @@ export function PropertyAddFormContent() {
       <FormInput name='seller_info.name' label='Seller Name' placeholder='Name' />
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
-      {/* <FormInput
-          type='file'
-          name='images'
-          label='Images (Select up to 4 images)'
-          accept='image/*'
-          multiple
-          modifyFieldProps={(field) => ({
-            // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.files),
-            // onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange([...Array.from(e.target.files ?? [])]),
-            onChange: (e: React.ChangeEvent<HTMLInputElement>) => field.onChange(Array.from(e.target.files ?? [])),
-            register: fileRef
-          })}
-        /> */}
+
       <PropertyImages />
-      {/* <FormField
-        control={control}
-        name='images'
-        render={({ field }) => {
-          return (
-            <FormItem>
-              <FormLabel>Images (Select up to 4 images)</FormLabel>
-              <FormControl>
-                <Input
-                  type='file'
-                  multiple
-                  accept='image/*'
-                  {...fileRef}
-                  onChange={(e) => {
-                    const { files } = e.target;
-
-                    // const updatedImages = watchedImages ? [...watchedImages] : [];
-                    // if (!files?.length) return;
-                    // for (let i = 0; i < files.length; i++) {
-                    //   updatedImages.push(files[i]);
-                    // }
-
-                    field.onChange(files);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      /> */}
 
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'

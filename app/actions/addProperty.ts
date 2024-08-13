@@ -19,7 +19,6 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
 
   const { userId } = sessionUser;
   const parsedData = PropertyAddFormSchema.safeParse(data);
-  console.log({ images: formData.get("images") });
 
   if (!parsedData.success) {
     const fields: Record<string, string> = {};

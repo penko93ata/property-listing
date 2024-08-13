@@ -12,7 +12,6 @@ export default function PropertyAddForm() {
     for (let i = 0; i < data.images.length; i++) {
       formData.append("images", data.images[i]);
     }
-    // formData.append("images", data.images[0]);
 
     return await onAddPropertySubmit(omit(data, "images"), formData);
   };

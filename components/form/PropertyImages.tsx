@@ -27,6 +27,9 @@ export function PropertyImages() {
       <input className='hidden' type='file' ref={hiddenFileInput} onChange={handleAddImages} multiple />
 
       <div className='w-80 m-2'>
+        <Button variant='outline' type='button' onClick={onAddImages}>
+          Images (Select up to 4 images)
+        </Button>
         {fields.map((field, index) => (
           <div key={field.imageId}>
             <FormField
@@ -43,10 +46,6 @@ export function PropertyImages() {
             />
           </div>
         ))}
-
-        <Button variant='outline' onClick={onAddImages}>
-          Add images
-        </Button>
       </div>
     </>
   );
