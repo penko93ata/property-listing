@@ -26,25 +26,24 @@ export function PropertyImages() {
     <>
       <input className='hidden' type='file' ref={hiddenFileInput} onChange={handleAddImages} multiple />
 
-      <div className='w-80 m-2'>
+      <div className='w-60 m-2 grid gap-2'>
         <Button variant='outline' type='button' onClick={onAddImages}>
           Images (Select up to 4 images)
         </Button>
         {fields.map((field, index) => (
-          <div key={field.imageId}>
-            <FormField
-              control={control}
-              name={`images.${index}`}
-              render={({ field }) => (
-                <div className='flex items-center'>
-                  <div>{field.name}</div>
-                  <Button variant='outline' size='icon' onClick={() => remove(index)}>
-                    <FaTrashAlt />
-                  </Button>
-                </div>
-              )}
-            />
-          </div>
+          <FormField
+            key={field.imageId}
+            control={control}
+            name={`images.${index}`}
+            render={({ field }) => (
+              <div className='flex items-center justify-between gap-2'>
+                <div>{field.name}</div>
+                <Button variant='outline' size='icon' onClick={() => remove(index)}>
+                  <FaTrashAlt />
+                </Button>
+              </div>
+            )}
+          />
         ))}
       </div>
     </>
