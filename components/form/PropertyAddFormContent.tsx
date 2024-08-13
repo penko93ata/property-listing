@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext, useFormState, useWatch } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 import { FormSelect } from "./FormSelect";
 import { FormInput } from "./FormInput";
 import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
@@ -11,8 +11,9 @@ import { PropertyImages } from "./PropertyImages";
 
 export function PropertyAddFormContent() {
   const { control } = useFormContext();
-  const { isSubmitting } = useFormState({ control });
-  const watchedImages = useWatch({ control, name: "images" });
+  const { isSubmitting, errors } = useFormState({ control });
+
+  console.log({ errors });
 
   return (
     <>

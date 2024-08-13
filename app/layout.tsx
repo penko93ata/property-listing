@@ -24,11 +24,11 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang='en'>
-        <body className={twMerge(inter.className, "flex flex-col h-dvh")}>
-          <div>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+        <body className={twMerge(inter.className, "flex flex-col")}>
+          <div className='flex flex-col justify-between h-[100dvh]'>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
           </div>
         </body>
       </html>

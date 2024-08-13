@@ -7,7 +7,7 @@ export async function fetchProperties() {
     }
 
     // TODO - Is { cache: "no-cache" } still needed to disable cache
-    const response = await fetch(`${apiDomain}/properties`);
+    const response = await fetch(`${apiDomain}/properties`, { cache: "no-cache" });
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
@@ -27,7 +27,7 @@ export async function fetchProperty(id: string) {
     }
 
     // TODO - Is { cache: "no-cache" } still needed to disable cache
-    const response = await fetch(`${apiDomain}/properties/${id}`);
+    const response = await fetch(`${apiDomain}/properties/${id}`, { cache: "no-cache" });
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
