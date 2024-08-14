@@ -12,9 +12,7 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
   const sessionUser = await getSessionUser();
 
   if (!sessionUser || !sessionUser.userId) {
-    return {
-      message: "User ID is required",
-    };
+    throw new Error("User ID is required");
   }
 
   const { userId } = sessionUser;
