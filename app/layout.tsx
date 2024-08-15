@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { twMerge } from "tailwind-merge";
 import AuthProvider from "@/components/AuthProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             <main>{children}</main>
             <Footer />
           </div>
+          <Toaster />
         </body>
       </html>
     </AuthProvider>

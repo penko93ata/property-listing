@@ -26,3 +26,14 @@ export const propertyAddFormDefaultValues: TPropertyAddFormState = {
   },
   images: [],
 };
+
+export function getPropertyEditFormDefaultValues(property: TPropertyAddFormState) {
+  return {
+    ...property,
+    rates: {
+      weekly: property.rates.weekly,
+      monthly: property.rates.monthly,
+      nightly: property.rates.nightly,
+    },
+  };
+}
