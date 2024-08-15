@@ -101,6 +101,7 @@ export const PropertyGetSchema = PropertyAddFormSchema.extend({
 export const PropertiesGetSchema = z.array(PropertyGetSchema.extend({ images: z.array(z.string()) }));
 
 export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
+export type TPropertyEditFormState = TPropertyAddFormState & { id?: string };
 export type TPropertyAddFormParsedState = z.infer<typeof PropertyAddParsedSchema>;
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
 export type TProperty = z.infer<typeof PropertyGetSchema>;

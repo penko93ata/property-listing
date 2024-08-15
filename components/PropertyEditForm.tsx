@@ -1,13 +1,18 @@
 "use client";
-import { PropertyAddFormSchema, TProperty, TPropertyAddFormState } from "@/types/properties.types";
+import { PropertyAddFormSchema, TProperty, TPropertyEditFormState } from "@/types/properties.types";
 import { Form } from "./form/Form";
 import { PropertyAddFormContent } from "./form/PropertyAddFormContent";
 import { getPropertyEditFormDefaultValues } from "./form/utils";
+import { updateProperty } from "@/app/actions/updateProperty";
+import { useParams } from "next/navigation";
 
 export default function PropertyEditForm({ property }: { property: TProperty }) {
-  const handleSubmit = async (data: TPropertyAddFormState) => {};
+  const { id } = useParams<{ id: string }>();
+  const handleSubmit = async (data: TPropertyEditFormState) => {
+    return await updateProperty(id, data);
+  };
   return (
-    <Form<TPropertyAddFormState>
+    <Form<TPropertyEditFormState>
       schema={PropertyAddFormSchema}
       defaultValues={getPropertyEditFormDefaultValues(property)}
       onSubmit={handleSubmit}

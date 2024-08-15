@@ -8,14 +8,18 @@ import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { Button } from "../ui/button";
 import { UploadPropertyImages } from "./UploadPropertyImages";
+import { useParams } from "next/navigation";
 
 export function PropertyAddFormContent() {
   const { control } = useFormContext();
   const { isSubmitting } = useFormState({ control });
+  const { id } = useParams<{ id: string }>();
+
+  const isEditPage = Boolean(id);
 
   return (
     <>
-      <h2 className='text-3xl text-center font-semibold mb-6'>Add Property</h2>
+      <h2 className='text-3xl text-center font-semibold mb-6'>{isEditPage ? "Edit" : "Add"} Property</h2>
       <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
       <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
@@ -49,14 +53,14 @@ export function PropertyAddFormContent() {
       <FormInput name='seller_info.email' label='Seller Email' placeholder='Email Address' />
       <FormInput type='tel' name='seller_info.phone' label='Seller Phone' placeholder='Phone' />
 
-      <UploadPropertyImages />
+      {!isEditPage && <UploadPropertyImages />}
 
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
         type='submit'
         disabled={isSubmitting}
       >
-        Add Property
+        {isEditPage ? "Edit" : "Add"} Property
       </Button>
     </>
   );

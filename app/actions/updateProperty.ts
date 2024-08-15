@@ -1,14 +1,11 @@
 "use server";
-// TODO - Remove type
-// import { FormStateResponse } from "@/types/form.types";
-import { PropertyAddFormSchema, TPropertyAddFormParsedState, TPropertyAddFormState } from "@/types/properties.types";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-import cloudinary from "@/config/cloudinary";
+import { PropertyAddFormSchema, TPropertyEditFormState } from "@/types/properties.types";
 
-export async function onAddPropertySubmit(data: TPropertyAddFormState, formData: FormData) {
+export async function updateProperty(propertyId: string, data: TPropertyEditFormState) {
   const sessionUser = await getSessionUser();
 
   if (!sessionUser || !sessionUser.userId) {
@@ -30,27 +27,16 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
     };
   }
 
-  const imageUrls = [];
+  const existingProperty = await prisma.properties.findUnique({
+    where: { id: propertyId },
+  });
 
-  const images = formData.getAll("images") as File[];
-
-  for (const imageFile of images) {
-    const imageBuffer = await imageFile.arrayBuffer();
-    const imageArray = Array.from(new Uint8Array(imageBuffer));
-    const imageData = Buffer.from(imageArray);
-
-    // Convert to base64
-    const imageBase64 = imageData.toString("base64");
-
-    // Make request to cloudinary
-    const response = await cloudinary.uploader.upload(`data:image/png;base64,${imageBase64}`, {
-      folder: "property-listing",
-    });
-
-    imageUrls.push(response.secure_url);
+  // Verify ownership
+  if (existingProperty?.owner !== userId) {
+    throw new Error("Current user is not the owner of this property");
   }
 
-  const newProperty = {
+  const updatedProperty = {
     data: {
       ...parsedData.data,
       beds: parseNumberEmptyString(data.beds),
@@ -64,17 +50,18 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
       amenities: data.amenities,
       owner: userId.toString(),
       description: data.description ? data.description : "",
-      images: imageUrls,
     },
   };
 
-  const response = await prisma.properties.create(newProperty);
+  const response = await prisma.properties.update({
+    where: { id: propertyId },
+    data: updatedProperty.data,
+  });
 
   revalidatePath("/", "layout");
-  return redirect(`${process.env.NEXTAUTH_URL}/properties/${response.id}`);
+  redirect(`/properties/${response.id}`);
 }
 
-// TODO - export to a utils file
 function parseNumberEmptyString(value: string | number | undefined): number {
   if (value === undefined || value === "") {
     return 0;
