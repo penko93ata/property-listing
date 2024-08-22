@@ -4,8 +4,8 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { twMerge } from "tailwind-merge";
-import AuthProvider from "@/components/AuthProvider";
 import { Toaster } from "@/components/ui/toaster";
+import Providers from "@/lib/query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
+    <Providers>
       <html lang='en'>
         <body className={twMerge(inter.className, "flex flex-col")}>
           <div className='flex flex-col justify-between h-[100dvh]'>
@@ -34,6 +34,6 @@ export default function RootLayout({
           <Toaster />
         </body>
       </html>
-    </AuthProvider>
+    </Providers>
   );
 }

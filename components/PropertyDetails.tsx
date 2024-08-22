@@ -1,5 +1,6 @@
 import { TProperty } from "@/types/properties.types";
 import { FaBed, FaBath, FaRulerCombined, FaTimes, FaCheck, FaMapMarker } from "react-icons/fa";
+import PropertyMap from "./PropertyMap";
 
 export default function PropertyDetails({ property }: { property: TProperty }) {
   return (
@@ -66,7 +67,7 @@ export default function PropertyDetails({ property }: { property: TProperty }) {
         </ul>
       </div>
       <div className='bg-white p-6 rounded-lg shadow-md mt-6'>
-        <div id='map'></div>
+        <PropertyMap property={property} />
       </div>
     </main>
   );
