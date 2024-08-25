@@ -2,7 +2,7 @@
 import { TProperty } from "@/types/properties.types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
