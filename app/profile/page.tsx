@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import profileDefault from "@/assets/images/profile.png";
 import { getSessionUser } from "../actions/getSessionUser";
 import prisma from "@/lib/db";

@@ -47,31 +47,6 @@ export default function PropertyMap({ property }: { property: TProperty }) {
     height: "500px",
   });
   const { data = [], isLoading, error } = useGeocode(`${property.location.street}, ${property.location.city}, ${property.location.state}`);
-  console.log({ data, isLoading, error });
-
-  // useEffect(() => {
-  //     const geocode = async () => {
-  //         try {
-  //             const response = await fetch(
-  //                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${property.location.street}, ${property.location.city}, ${property.location.state}.json?access_token=${process.env.NEXT_PUBLIC_MAPBOX_API_KEY}`
-  //             );
-  //             const data = await response.json();
-  //             setLat(data.features[0].center[1]);
-  //             setLng(data.features[0].center[0]);
-  //             setViewport({
-  //                 ...viewport,
-  //                 latitude: data.features[0].center[1],
-  //                 longitude: data.features[0].center[0],
-  //             });
-  //         } catch (error) {
-  //             setGeocodeError(error);
-  //         } finally {
-  //             setLoading(false);
-  //         }
-  //     };
-
-  //     geocode();
-  // }, []);
 
   if (isLoading) {
     return <Spinner />;

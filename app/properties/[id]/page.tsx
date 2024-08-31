@@ -1,3 +1,4 @@
+import { isPropertyBookmarked } from "@/app/actions/bookmarkProperty";
 import BookmarkButton from "@/components/BookmarkButton";
 import PropertyContactForm from "@/components/PropertyContactForm";
 import PropertyDetails from "@/components/PropertyDetails";
@@ -16,6 +17,8 @@ export default async function PropertyPage({ params: { id } }: { params: { id: s
     return <h1 className='text-center text-2xl font-bold mt-10'>Property Not Found</h1>;
   }
 
+  const isBookmarked = await isPropertyBookmarked(property.id);
+
   return (
     <>
       <PropertyHeaderImage image={property.images[0]} />
@@ -33,7 +36,7 @@ export default async function PropertyPage({ params: { id } }: { params: { id: s
             <PropertyDetails property={property} />
             {/* Sidebar */}
             <aside className='space-y-4'>
-              <BookmarkButton property={property} />
+              <BookmarkButton property={property} isBookmarked={isBookmarked} />
               <ShareButtons property={property} />
               <PropertyContactForm property={property} />
             </aside>

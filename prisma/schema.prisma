@@ -27,19 +27,19 @@ type PropertiesSellerInfo {
 }
 
 model messages {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  user_sender     users         @relation("user_sender", fields: [sender], references: [id])
-  user_recipient  users         @relation("user_recipient", fields: [recipient], references: [id])
-  sender          String        @db.ObjectId
-  recipient       String        @db.ObjectId
-  property        String
-  name            String
-  email           String
-  phone           String
-  body            String
-  read            Boolean       @default(false)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  user_sender    users    @relation("user_sender", fields: [sender], references: [id])
+  user_recipient users    @relation("user_recipient", fields: [recipient], references: [id])
+  sender         String   @db.ObjectId
+  recipient      String   @db.ObjectId
+  property       String
+  name           String
+  email          String
+  phone          String
+  body           String
+  read           Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model properties {
@@ -58,18 +58,19 @@ model properties {
   seller_info PropertiesSellerInfo
   square_feet Int
   type        String
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
 }
 
 model users {
-  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
-  email               String        @unique
-  username            String
-  image               String?
-  bookmarks           properties[]
-  sender_messages     messages[]    @relation("user_sender")
-  recipient_messages  messages[]    @relation("user_recipient")
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
+  id                 String       @id @default(auto()) @map("_id") @db.ObjectId
+  email              String       @unique
+  username           String
+  image              String?
+  bookmarks          String[]     @db.ObjectId // Array of ObjectIds referencing Property documents
+  properties         properties[]
+  sender_messages    messages[]   @relation("user_sender")
+  recipient_messages messages[]   @relation("user_recipient")
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
 }

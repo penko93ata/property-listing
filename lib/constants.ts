@@ -35,3 +35,7 @@ export const amenitiesItems = [
   { id: "amenity_ski_equipment_storage", label: "Ski Equipment Storage" },
   { id: "mountain_view", label: "Mountain View" },
 ];
+
+export const getAmenityLabel = (id: string) => {
+  return amenitiesItems.find((item) => item.id === id)?.label;
+};

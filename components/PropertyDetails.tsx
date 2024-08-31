@@ -1,6 +1,7 @@
 import { TProperty } from "@/types/properties.types";
 import { FaBed, FaBath, FaRulerCombined, FaTimes, FaCheck, FaMapMarker } from "react-icons/fa";
 import PropertyMap from "./PropertyMap";
+import { getAmenityLabel } from "@/lib/constants";
 
 export default function PropertyDetails({ property }: { property: TProperty }) {
   return (
@@ -61,7 +62,7 @@ export default function PropertyDetails({ property }: { property: TProperty }) {
         <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 list-none gap-2'>
           {property.amenities?.map((amenity, index) => (
             <li key={index}>
-              <FaCheck className='inline-block text-green-600 mr-2' /> {amenity}
+              <FaCheck className='inline-block text-green-600 mr-2' /> {getAmenityLabel(amenity)}
             </li>
           ))}
         </ul>

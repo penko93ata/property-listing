@@ -33,6 +33,7 @@ export const authOptions: AuthOptions = {
             email: profile?.email ?? "",
             username: username ?? "",
             image: profile?.image ?? "",
+            bookmarks: [],
           },
         });
       }
