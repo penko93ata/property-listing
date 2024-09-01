@@ -3,7 +3,7 @@
 import { useFormContext, useFormState } from "react-hook-form";
 import { FormSelect } from "./FormSelect";
 import { FormInput } from "./FormInput";
-import { amenitiesItems, propetyTypeOptions } from "@/lib/constants";
+import { amenitiesItems, propertyTypeOptions } from "@/lib/constants";
 import { Label } from "../ui/label";
 import { FormCheckboxGroup } from "./FormCheckboxGroup";
 import { Button } from "../ui/button";
@@ -20,7 +20,7 @@ export function PropertyAddFormContent() {
   return (
     <>
       <h2 className='text-3xl text-center font-semibold mb-6'>{isEditPage ? "Edit" : "Add"} Property</h2>
-      <FormSelect name='type' label='Property Type' options={propetyTypeOptions} />
+      <FormSelect name='type' label='Property Type' options={propertyTypeOptions} />
       <FormInput name='name' label='Listing Name' placeholder='eg. Beautiful Apartment In Miami' />
       <FormInput name='description' label='Description' placeholder='Add an optional description of your property' />
 

@@ -1,34 +1,56 @@
 "use client";
-import { SelectItem } from "@radix-ui/react-select";
-import { Input } from "./ui/input";
-import { Select, SelectContent, SelectGroup, SelectTrigger, SelectValue } from "./ui/select";
-import { propetyTypeOptions } from "@/lib/constants";
+import { propertyTypeOptions } from "@/lib/constants";
 import { Button } from "./ui/button";
+import { Form } from "./form/Form";
+import { FormInput } from "./form/FormInput";
+import { defaultPropertySearchFormValues } from "./form/utils";
+import { PropertySearchSchema, TPropertySearchFormState } from "@/types/properties.types";
+import { FormSelect } from "./form/FormSelect";
+import { useRouter } from "next/navigation";
 
 export default function PropertySearchForm() {
+  const router = useRouter();
+
+  const handleOnSubmit = ({ location, propertyType }: TPropertySearchFormState) => {
+    if (location === "" && propertyType === "All") return router.push("/properties");
+
+    const query = new URLSearchParams();
+
+    query.append("location", location ?? "");
+    query.append("propertyType", propertyType ?? "");
+    router.push(`/properties/search-results?${query}`);
+  };
+
   return (
-    <form className='mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center'>
+    <Form
+      schema={PropertySearchSchema}
+      defaultValues={defaultPropertySearchFormValues}
+      onSubmit={handleOnSubmit}
+      className='mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center'
+    >
+      <PropertySearchFormContent />
+    </Form>
+  );
+}
+
+function PropertySearchFormContent() {
+  return (
+    <>
       <div className='w-full md:w-3/5 md:pr-2 mb-4 md:mb-0'>
-        <Input
+        <FormInput
+          name='location'
           placeholder='Enter Location (City, State, Zip, etc'
           className='w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500 h-auto'
         />
       </div>
       <div className='w-full md:w-2/5 md:pl-2'>
-        <Select>
-          <SelectTrigger className='w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500 h-auto'>
-            <SelectValue placeholder='Property Type' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {propetyTypeOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <FormSelect
+          name='propertyType'
+          label='Property Type'
+          options={[{ value: "All", label: "All" }, ...propertyTypeOptions]}
+          showFormLabel={false}
+          className='w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500 h-auto'
+        />
       </div>
       <Button
         type='submit'
@@ -36,6 +58,6 @@ export default function PropertySearchForm() {
       >
         Search
       </Button>
-    </form>
+    </>
   );
 }

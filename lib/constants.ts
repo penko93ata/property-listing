@@ -1,4 +1,4 @@
-export const propetyTypeOptions = [
+export const propertyTypeOptions = [
   { value: "Apartment", label: "Apartment" },
   { value: "Studio", label: "Studio" },
   { value: "Condo", label: "Condo" },

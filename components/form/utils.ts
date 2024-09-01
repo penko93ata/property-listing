@@ -1,4 +1,4 @@
-import { TPropertyAddFormState } from "@/types/properties.types";
+import { TPropertyAddFormState, TPropertySearchFormState } from "@/types/properties.types";
 
 export const propertyAddFormDefaultValues: TPropertyAddFormState = {
   type: "Apartment",
@@ -37,3 +37,8 @@ export function getPropertyEditFormDefaultValues(property: TPropertyAddFormState
     },
   };
 }
+
+export const defaultPropertySearchFormValues: TPropertySearchFormState = {
+  location: "",
+  propertyType: "All",
+};

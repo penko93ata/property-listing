@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { optional, z } from "zod";
 
 const { required } = getErrorMessages();
 
-const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
-const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
+// const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
+// const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+// const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
 const getOptionalNumberSchema = () =>
   z
@@ -134,3 +134,10 @@ function getErrorMessages() {
 //     )
 //     .refine((files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE), `File size should be less than ${MAX_UPLOAD_SIZE}mb.`)
 //     .transform((files) => files.map((file) => file.name))
+
+export const PropertySearchSchema = z.object({
+  location: z.string().optional(),
+  propertyType: z.string().optional(),
+});
+
+export type TPropertySearchFormState = z.infer<typeof PropertySearchSchema>;

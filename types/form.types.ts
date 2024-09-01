@@ -16,6 +16,8 @@ export type IFormContextInput<T = unknown> = T & {
 
 export type IFormContextSelect<T = unknown> = IFormContextInput<T> & {
   options: { value: string; label: string }[];
+  className?: string;
+  showFormLabel?: boolean;
 };
 
 export type IFormContextCheckboxGroup<T = unknown> = Pick<IFormContextInput<T>, "name" | "label" | "helperText"> & {

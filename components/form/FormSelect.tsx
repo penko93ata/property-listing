@@ -5,7 +5,17 @@ import { IFormContextSelect } from "@/types/form.types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { SelectProps } from "@radix-ui/react-select";
 
-export function FormSelect({ name, id = name, label, modifyFieldProps, helperText, options, ...rest }: IFormContextSelect<SelectProps>) {
+export function FormSelect({
+  name,
+  id = name,
+  label,
+  modifyFieldProps,
+  helperText,
+  options,
+  className,
+  showFormLabel = true,
+  ...rest
+}: IFormContextSelect<SelectProps>) {
   const { control } = useFormContext();
 
   return (
@@ -15,11 +25,11 @@ export function FormSelect({ name, id = name, label, modifyFieldProps, helperTex
       render={({ field }) => {
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            {showFormLabel && <FormLabel>{label}</FormLabel>}
             <Select onValueChange={field.onChange} defaultValue={field.value} {...rest}>
               <FormControl>
-                <SelectTrigger className='focus:ring focus:ring-blue-500'>
-                  <SelectValue placeholder='Property Type' />
+                <SelectTrigger className={className ?? "focus:ring focus:ring-blue-500"}>
+                  <SelectValue placeholder={label} />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
