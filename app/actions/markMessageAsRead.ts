@@ -25,7 +25,7 @@ export async function markMessageAsRead(messageId: string) {
     throw new Error("You are not authorized to mark this message as read");
   }
 
-  await prisma.messages.update({
+  const response = await prisma.messages.update({
     where: {
       id: messageId,
     },
@@ -36,5 +36,5 @@ export async function markMessageAsRead(messageId: string) {
 
   revalidatePath("/messages", "page");
 
-  return message.read;
+  return response.read;
 }

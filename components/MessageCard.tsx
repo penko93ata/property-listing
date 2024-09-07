@@ -16,7 +16,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
 
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message.id);
-    setUnreadCount((prevCount) => (read ? prevCount + 1 : prevCount - 1));
+    setUnreadCount((prevCount) => (read ? prevCount - 1 : prevCount + 1));
     toast({
       title: read ? "Message marked as read" : "Message marked as unread",
       description: `The message from ${message.name} has been marked as ${read ? "read" : "unread"}`,
