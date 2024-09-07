@@ -14,6 +14,7 @@ export const GetMessageSchema = AddMessageSchema.extend({
   id: z.string().regex(/^[0-9a-f]{24}$/),
   recipient: z.string().regex(/^[0-9a-f]{24}$/),
   property: z.string().regex(/^[0-9a-f]{24}$/),
+  read: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
