@@ -1,5 +1,7 @@
 import prisma from "@/lib/db";
 import { getSessionUser } from "../actions/getSessionUser";
+import MessageCard from "@/components/MessageCard";
+import { TProperty } from "@/types/properties.types";
 
 export default async function MessagesPage() {
   const sessionUser = await getSessionUser();
@@ -16,9 +18,9 @@ export default async function MessagesPage() {
     orderBy: {
       createdAt: "asc",
     },
-    // include: {
-    //     user_sender: true,
-    // }
+    include: {
+      user_property: true,
+    },
   });
 
   const unreadMessages = await prisma.messages.findMany({
@@ -29,9 +31,9 @@ export default async function MessagesPage() {
     orderBy: {
       createdAt: "asc",
     },
-    // include: {
-    //     user_sender: true,
-    // }
+    include: {
+      user_property: true,
+    },
   });
 
   const messages = [...unreadMessages, ...readMessages];
@@ -42,7 +44,11 @@ export default async function MessagesPage() {
         <div className='bg-white px-6 py-8 mb-4 shadow-md rounder-md border m-4 md:m-0'>
           <h1 className='text-3xl font-bold mb-4'>Your Messages</h1>
           <div className='space-y-4'>
-            {messages.length === 0 ? <p>You have no messages</p> : messages.map((message) => <h3 key={message.id}>{message.name}</h3>)}
+            {messages.length === 0 ? (
+              <p>You have no messages</p>
+            ) : (
+              messages.map((message) => <MessageCard key={message.id} message={message} property={message.user_property as TProperty} />)
+            )}
           </div>
         </div>
       </div>

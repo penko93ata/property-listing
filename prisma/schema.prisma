@@ -27,39 +27,41 @@ type PropertiesSellerInfo {
 }
 
 model messages {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  user_sender    users    @relation("user_sender", fields: [sender], references: [id])
-  user_recipient users    @relation("user_recipient", fields: [recipient], references: [id])
-  sender         String   @db.ObjectId
-  recipient      String   @db.ObjectId
-  property       String
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  user_sender    users      @relation("user_sender", fields: [sender], references: [id])
+  user_recipient users      @relation("user_recipient", fields: [recipient], references: [id])
+  user_property  properties @relation("user_property", fields: [property], references: [id])
+  sender         String     @db.ObjectId
+  recipient      String     @db.ObjectId
+  property       String     @db.ObjectId
   name           String
   email          String
   phone          String
   body           String
-  read           Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  read           Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model properties {
-  id          String               @id @default(auto()) @map("_id") @db.ObjectId
-  amenities   String[]
-  baths       Int
-  beds        Int
-  description String
-  images      String[]
-  isFeatured  Boolean              @default(false)
-  location    PropertiesLocation
-  name        String
-  user        users                @relation(fields: [owner], references: [id])
-  owner       String               @db.ObjectId
-  rates       PropertiesRates
-  seller_info PropertiesSellerInfo
-  square_feet Int
-  type        String
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  id                    String               @id @default(auto()) @map("_id") @db.ObjectId
+  amenities             String[]
+  baths                 Int
+  beds                  Int
+  description           String
+  images                String[]
+  isFeatured            Boolean              @default(false)
+  location              PropertiesLocation
+  name                  String
+  property_messages     messages[]           @relation("user_property")
+  user                  users                @relation(fields: [owner], references: [id])
+  owner                 String               @db.ObjectId
+  rates                 PropertiesRates
+  seller_info           PropertiesSellerInfo
+  square_feet           Int
+  type                  String
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
 }
 
 model users {

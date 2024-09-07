@@ -33,7 +33,7 @@ export async function addMessage({ data, property, recipient }: TAddMessageSubmi
     return { error: "You cannot send a message to yourself" };
   }
 
-  const response = await prisma.messages.create({
+  await prisma.messages.create({
     data: {
       sender: userId,
       recipient,
@@ -41,7 +41,7 @@ export async function addMessage({ data, property, recipient }: TAddMessageSubmi
       name: data.name,
       email: data.email,
       phone: data.phone,
-      body: data.message,
+      body: data.body,
     },
   });
 

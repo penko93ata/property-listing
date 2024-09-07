@@ -17,7 +17,6 @@ export default function PropertyContactForm({ property }: { property: TProperty 
   const { toast } = useToast();
 
   const handleOnSubmit = async (data: TAddMessageFormState) => {
-    console.log("Message data", data);
     const response = await addMessage({ data, property: property.id, recipient: property.owner });
 
     if (response.submitted) {
@@ -111,7 +110,7 @@ function PropertyContactFormContent() {
       <FormInput name='name' label='Name' placeholder='Enter your name' />
       <FormInput name='email' label='Email' placeholder='Enter your email' />
       <FormInput name='phone' label='Phone' placeholder='Enter your phone number' />
-      <FormTextarea name='message' label='Message' placeholder='Enter your message' />
+      <FormTextarea name='body' label='Message' placeholder='Enter your message' />
       <Button
         type='submit'
         disabled={isSubmitting}
