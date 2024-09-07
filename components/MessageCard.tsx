@@ -6,13 +6,17 @@ import { useToast } from "./ui/use-toast";
 import { markMessageAsRead } from "@/app/actions/markMessageAsRead";
 import { deleteMessage } from "@/app/actions/deleteMessage";
 import { useTransition } from "react";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 export default function MessageCard({ message, property }: { message: TMessage; property: TProperty }) {
   const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
+  const { setUnreadCount } = useGlobalContext();
+
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message.id);
+    setUnreadCount((prevCount) => (read ? prevCount + 1 : prevCount - 1));
     toast({
       title: read ? "Message marked as read" : "Message marked as unread",
       description: `The message from ${message.name} has been marked as ${read ? "read" : "unread"}`,
@@ -21,6 +25,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
 
   const handleDeleteClick = async () => {
     startTransition(async () => await deleteMessage(message.id));
+    setUnreadCount((prevCount: number) => (message.read ? prevCount : prevCount - 1));
     toast({
       title: "Message deleted",
       description: `The message from ${message.name} has been deleted`,
