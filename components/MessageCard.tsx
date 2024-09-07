@@ -4,9 +4,12 @@ import { TProperty } from "@/types/properties.types";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { markMessageAsRead } from "@/app/actions/markMessageAsRead";
+import { deleteMessage } from "@/app/actions/deleteMessage";
+import { useTransition } from "react";
 
 export default function MessageCard({ message, property }: { message: TMessage; property: TProperty }) {
   const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
 
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message.id);
@@ -15,6 +18,16 @@ export default function MessageCard({ message, property }: { message: TMessage; 
       description: `The message from ${message.name} has been marked as ${read ? "read" : "unread"}`,
     });
   };
+
+  const handleDeleteClick = async () => {
+    startTransition(async () => await deleteMessage(message.id));
+    toast({
+      title: "Message deleted",
+      description: `The message from ${message.name} has been deleted`,
+    });
+  };
+
+  if (isPending) return <p>Deleting Message</p>;
 
   return (
     <div className='relative bg-white p-4 rounded-md shadow-md border-gray-200'>
@@ -44,7 +57,9 @@ export default function MessageCard({ message, property }: { message: TMessage; 
       <Button onClick={handleReadClick} className='mt-4 mr-3 bg-blue-500 text-white py-1 px-3 rounded-md'>
         {message.read ? "Mark As New" : "Mark As Read"}
       </Button>
-      <Button className='mt-4 bg-red-500 hover:bg-red-900 text-white py-1 px-3 rounded-md'>Delete</Button>
+      <Button onClick={handleDeleteClick} className='mt-4 bg-red-500 hover:bg-red-900 text-white py-1 px-3 rounded-md'>
+        Delete
+      </Button>
     </div>
   );
 }
