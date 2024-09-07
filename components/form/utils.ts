@@ -1,4 +1,6 @@
+import { AddMessageSchema, TAddMessageFormState } from "@/types/messages.types";
 import { TPropertyAddFormState, TPropertySearchFormState } from "@/types/properties.types";
+import { z } from "zod";
 
 export const propertyAddFormDefaultValues: TPropertyAddFormState = {
   type: "Apartment",
@@ -41,4 +43,11 @@ export function getPropertyEditFormDefaultValues(property: TPropertyAddFormState
 export const defaultPropertySearchFormValues: TPropertySearchFormState = {
   location: "",
   propertyType: "All",
+};
+
+export const defaultMessageFormValues: TAddMessageFormState = {
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
 };

@@ -1,6 +1,7 @@
+import { getErrorMessages } from "@/utils/getErrroMessages";
 import { optional, z } from "zod";
 
-const { required } = getErrorMessages();
+const { required, min } = getErrorMessages();
 
 // const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
 // const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -44,7 +45,7 @@ export const PropertyAddFormSchema = z.object({
   description: z
     .string()
     .trim()
-    .min(1, { message: getErrorMessages().min(10) })
+    .min(1, { message: min(10) })
     .optional(),
   location: z.object({
     street: z.string().trim().min(1, { message: required }),
@@ -105,13 +106,6 @@ export type TPropertyEditFormState = TPropertyAddFormState & { id?: string };
 export type TPropertyAddFormParsedState = z.infer<typeof PropertyAddParsedSchema>;
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
 export type TProperty = z.infer<typeof PropertyGetSchema>;
-
-function getErrorMessages() {
-  return {
-    required: "Field is required",
-    min: (minLength: number) => `Field must be at least ${minLength} characters long`,
-  };
-}
 
 // z.array(
 //   z
