@@ -1,13 +1,13 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
-export async function fetchProperties() {
+export async function fetchProperties({ searchParams: { page = 1, pageSize = 3 } }: { searchParams: { page: number; pageSize: number } }) {
   try {
     if (!apiDomain) {
       return [];
     }
 
-    // TODO - Is { cache: "no-cache" } still needed to disable cache
-    const response = await fetch(`${apiDomain}/properties`, { cache: "no-cache" });
+    const queryParams = new URLSearchParams({ page: page.toString(), pageSize: pageSize.toString() });
+    const response = await fetch(`${apiDomain}/properties?${queryParams}`, { cache: "no-cache" });
 
     if (!response.ok) {
       throw new Error("Failed to fetch data");
@@ -26,7 +26,6 @@ export async function fetchProperty(id: string) {
       return null;
     }
 
-    // TODO - Is { cache: "no-cache" } still needed to disable cache
     const response = await fetch(`${apiDomain}/properties/${id}`, { cache: "no-cache" });
 
     if (!response.ok) {

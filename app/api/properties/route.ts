@@ -1,12 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
-import { PropertiesGetSchema, PropertyAddFormSchema } from "@/types/properties.types";
+import { NextRequest, NextResponse } from "next/server";
+import { PropertiesGetSchema } from "@/types/properties.types";
 import prisma from "@/lib/db";
 
 // GET /api/properties
-export async function GET(request: NextApiRequest) {
+export async function GET(request: NextRequest) {
+  const {
+    nextUrl: { searchParams },
+  } = request;
+
+  const page = parseInt(searchParams.get("page") as string) || 1;
+  const pageSize = parseInt(searchParams.get("pageSize") as string) || 3;
+  const skip = (page - 1) * pageSize;
+
   try {
-    const properties = await prisma.properties.findMany();
+    const properties = await prisma.properties.findMany({ skip, take: pageSize });
 
     const result = await PropertiesGetSchema.safeParseAsync(properties);
 
@@ -23,14 +30,3 @@ export async function GET(request: NextApiRequest) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
-
-// export async function POST(request: NextApiRequest, response: NextApiResponse) {
-//   const formData = Object.fromEntries(request.body);
-//   const parsedData = PropertyAddFormSchema.safeParse(formData);
-
-//   if (!parsedData.success) {
-//     // TODO - error handling
-//   }
-
-//   return response.status(204);
-// }

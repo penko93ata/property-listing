@@ -1,12 +1,17 @@
 import PropertyCard from "@/components/PropertyCard";
-import Spinner from "@/components/Spinner";
+import prisma from "@/lib/db";
 import { TProperty } from "@/types/properties.types";
 import { fetchProperties } from "@/utils/requests";
-// import { Prisma } from "@prisma/client";
-// import type { properties } from "@prisma/client";
 
-export default async function Properties() {
-  const properties: TProperty[] = await fetchProperties();
+type TSearchParams = {
+  searchParams: URLSearchParams;
+};
+
+export default async function PropertiesPage({ searchParams: { page, pageSize } }: { searchParams: { page: number; pageSize: number } }) {
+  const skip = (page - 1) * pageSize;
+  const total = await prisma.properties.count();
+
+  const properties: TProperty[] = await fetchProperties({ searchParams: { page, pageSize } });
 
   // Sort properties by date
   const sortedProperties = properties.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
