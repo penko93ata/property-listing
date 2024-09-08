@@ -1,13 +1,14 @@
+import Pagination from "@/components/Pagination";
 import PropertyCard from "@/components/PropertyCard";
 import prisma from "@/lib/db";
 import { TProperty } from "@/types/properties.types";
 import { fetchProperties } from "@/utils/requests";
 
-type TSearchParams = {
-  searchParams: URLSearchParams;
-};
-
-export default async function PropertiesPage({ searchParams: { page, pageSize } }: { searchParams: { page: number; pageSize: number } }) {
+export default async function PropertiesPage({
+  searchParams: { page = 1, pageSize = 3 },
+}: {
+  searchParams: { page: number; pageSize: number };
+}) {
   const skip = (page - 1) * pageSize;
   const total = await prisma.properties.count();
 
@@ -28,6 +29,7 @@ export default async function PropertiesPage({ searchParams: { page, pageSize } 
             ))}
           </div>
         )}
+        <Pagination page={page} pageSize={pageSize} totalItems={total} />
       </div>
     </section>
   );
