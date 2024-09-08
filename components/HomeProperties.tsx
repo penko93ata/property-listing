@@ -26,7 +26,7 @@ export default async function HomeProperties() {
 }
 
 async function RecentProperties() {
-  const properties: TProperty[] = await fetchProperties();
+  const properties: TProperty[] = await fetchProperties({ searchParams: { page: 1, pageSize: 3 } });
   const recentProperties = properties.sort(() => Math.random() - Math.random()).slice(0, 3);
 
   return recentProperties.length === 0 ? (

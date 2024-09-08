@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { twMerge } from "tailwind-merge";
 import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/lib/query-provider";
+import "photoswipe/dist/photoswipe.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
