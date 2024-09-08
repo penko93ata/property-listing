@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { PropertyGetSchema } from "@/types/properties.types";
 
+type ParamProps = {
+  params: {
+    id: string;
+  };
+};
+
 // GET /api/properties/[id]
-export async function GET(request: NextRequest, { params: { id } }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params: { id } }: ParamProps) {
   try {
     const property = await prisma.properties.findUnique({
       where: {

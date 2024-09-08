@@ -49,5 +49,5 @@ export const defaultMessageFormValues: TAddMessageFormState = {
   name: "",
   email: "",
   phone: "",
-  message: "",
+  body: "",
 };
