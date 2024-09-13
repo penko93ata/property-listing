@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PaginationContent, PaginationItem, PaginationNext, PaginationPrevious, Pagination as UIPagination } from "./ui/pagination";
 
 type PaginationProps = {
   page: number;
@@ -14,22 +14,27 @@ export default function Pagination({ page, pageSize, totalItems }: PaginationPro
   if (!showPagination) return null;
 
   return (
-    <section className='container mx-auto flex justify-center items-center my-8'>
-      {page > 1 && (
-        <Link href={`/properties?page=${Number(page) - 1}`} className='mr-2 px-2 py-1 border border-gray-300 rounded-md'>
-          Previous
-        </Link>
-      )}
+    <UIPagination>
+      <PaginationContent className='container mx-auto flex justify-center items-center my-8'>
+        {page > 1 && (
+          <PaginationItem>
+            <PaginationPrevious
+              href={`/properties?page=${Number(page) - 1}`}
+              className='mr-2 px-2 py-1 border border-gray-300 rounded-md'
+            />
+          </PaginationItem>
+        )}
 
-      <span className='mx-2'>
-        Page {page} of {totalPages}
-      </span>
+        <span className='mx-2'>
+          Page {page} of {totalPages}
+        </span>
 
-      {page < totalPages && (
-        <Link href={`/properties?page=${Number(page) + 1}`} className='ml-2 px-2 py-1 border border-gray-300 rounded-md'>
-          Next
-        </Link>
-      )}
-    </section>
+        {page < totalPages && (
+          <PaginationItem>
+            <PaginationNext href={`/properties?page=${Number(page) + 1}`} className='ml-2 px-2 py-1 border border-gray-300 rounded-md' />
+          </PaginationItem>
+        )}
+      </PaginationContent>
+    </UIPagination>
   );
 }
