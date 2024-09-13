@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import { PaginationContent, PaginationItem, PaginationNext, PaginationPrevious, Pagination as UIPagination } from "./ui/pagination";
 
 type PaginationProps = {
@@ -16,24 +17,27 @@ export default function Pagination({ page, pageSize, totalItems }: PaginationPro
   return (
     <UIPagination>
       <PaginationContent className='container mx-auto flex justify-center items-center my-8'>
-        {page > 1 && (
-          <PaginationItem>
-            <PaginationPrevious
-              href={`/properties?page=${Number(page) - 1}`}
-              className='mr-2 px-2 py-1 border border-gray-300 rounded-md'
-            />
-          </PaginationItem>
-        )}
+        <PaginationItem>
+          <PaginationPrevious
+            aria-disabled={page <= 1}
+            tabIndex={page <= 1 ? -1 : undefined}
+            href={`/properties?page=${Number(page) - 1}`}
+            className={twMerge("mr-2 px-2 py-1 border border-gray-300 rounded-md", page <= 1 && "pointer-events-none opacity-50")}
+          />
+        </PaginationItem>
 
         <span className='mx-2'>
           Page {page} of {totalPages}
         </span>
 
-        {page < totalPages && (
-          <PaginationItem>
-            <PaginationNext href={`/properties?page=${Number(page) + 1}`} className='ml-2 px-2 py-1 border border-gray-300 rounded-md' />
-          </PaginationItem>
-        )}
+        <PaginationItem>
+          <PaginationNext
+            aria-disabled={page >= totalPages}
+            tabIndex={page >= totalPages ? -1 : undefined}
+            href={`/properties?page=${Number(page) + 1}`}
+            className={twMerge("ml-2 px-2 py-1 border border-gray-300 rounded-md", page >= totalPages && "pointer-events-none opacity-50")}
+          />
+        </PaginationItem>
       </PaginationContent>
     </UIPagination>
   );
