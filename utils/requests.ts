@@ -1,6 +1,6 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
-export async function fetchProperties({ searchParams: { page = 1, pageSize = 3 } }: { searchParams: { page: number; pageSize: number } }) {
+export async function fetchProperties({ searchParams: { page = 1, pageSize = 9 } }: { searchParams: { page: number; pageSize: number } }) {
   try {
     if (!apiDomain) {
       return [];

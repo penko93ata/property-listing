@@ -5,11 +5,10 @@ import { TProperty } from "@/types/properties.types";
 import { fetchProperties } from "@/utils/requests";
 
 export default async function PropertiesPage({
-  searchParams: { page = 1, pageSize = 3 },
+  searchParams: { page = 1, pageSize = 9 },
 }: {
   searchParams: { page: number; pageSize: number };
 }) {
-  const skip = (page - 1) * pageSize;
   const total = await prisma.properties.count();
 
   const properties: TProperty[] = await fetchProperties({ searchParams: { page, pageSize } });

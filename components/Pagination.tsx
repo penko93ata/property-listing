@@ -1,5 +1,12 @@
 import { twMerge } from "tailwind-merge";
-import { PaginationContent, PaginationItem, PaginationNext, PaginationPrevious, Pagination as UIPagination } from "./ui/pagination";
+import {
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  Pagination as UIPagination,
+} from "./ui/pagination";
 
 type PaginationProps = {
   page: number;
@@ -7,10 +14,34 @@ type PaginationProps = {
   totalItems: number;
 };
 
+function paginate({ currentPage, totalPages }: { currentPage: number; totalPages: number }) {
+  if (!currentPage || !totalPages) return null;
+
+  let prev = currentPage === 1 ? null : currentPage - 1,
+    next = currentPage === totalPages ? null : currentPage + 1,
+    items: (string | number)[] = [1];
+
+  if (currentPage === 1 && totalPages === 1) return { currentPage, prev, next, items };
+  if (currentPage > 4) items.push("…");
+
+  let r = 2,
+    r1 = currentPage - r,
+    r2 = currentPage + r;
+
+  for (let i = r1 > 2 ? r1 : 2; i <= Math.min(totalPages, r2); i++) items.push(i);
+
+  if (r2 + 1 < totalPages) items.push("…");
+  if (r2 < totalPages) items.push(totalPages);
+
+  return { currentPage, prev, next, items };
+}
+
 export default function Pagination({ page, pageSize, totalItems }: PaginationProps) {
   const totalPages = Math.ceil(totalItems / pageSize);
 
   const showPagination = totalItems > pageSize;
+
+  const pagination = paginate({ currentPage: Number(page), totalPages: totalPages });
 
   if (!showPagination) return null;
 
@@ -26,9 +57,21 @@ export default function Pagination({ page, pageSize, totalItems }: PaginationPro
           />
         </PaginationItem>
 
-        <span className='mx-2'>
-          Page {page} of {totalPages}
-        </span>
+        {pagination?.items.map((item, index) => (
+          <PaginationItem key={index}>
+            <PaginationLink
+              href={`/properties?page=${Number(item)}`}
+              className={twMerge(
+                "px-2 py-1 border border-gray-300 rounded-md",
+                item === pagination?.currentPage && "bg-gray-300",
+                item === "…" && "pointer-events-none opacity-50"
+              )}
+              isActive={item === pagination?.currentPage}
+            >
+              {item}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
 
         <PaginationItem>
           <PaginationNext
