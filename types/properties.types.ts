@@ -27,7 +27,7 @@ const getRequiredNumberSchema = () =>
       .int({
         message: "must be a whole number",
       })
-      .gte(0),
+      .gte(1, { message: required }),
     z.literal("").refine(() => false, {
       message: "is required",
     }),
