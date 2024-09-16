@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { FaTrashAlt } from "react-icons/fa";
 
 export function UploadPropertyImages() {
-  const { control } = useFormContext();
+  const { control, getValues } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: "images", keyName: "imageId" });
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);
@@ -22,6 +22,8 @@ export function UploadPropertyImages() {
     hiddenFileInput.current!.value = "";
   };
 
+  const images: File[] = getValues("images");
+
   return (
     <>
       <input className='hidden' type='file' ref={hiddenFileInput} onChange={handleAddImages} multiple />
@@ -35,9 +37,9 @@ export function UploadPropertyImages() {
             key={field.imageId}
             control={control}
             name={`images.${index}`}
-            render={({ field }) => (
+            render={() => (
               <div className='flex items-center justify-between gap-2'>
-                <div>{field.name}</div>
+                <div>{images[index].name}</div>
                 <Button variant='outline' size='icon' onClick={() => remove(index)}>
                   <FaTrashAlt />
                 </Button>

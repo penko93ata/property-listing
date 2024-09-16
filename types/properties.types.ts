@@ -8,6 +8,19 @@ const { required, min } = getErrorMessages();
 // const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
 const getOptionalNumberSchema = () =>
+  z
+    .union([
+      z.coerce
+        .number()
+        .int({
+          message: "must be a whole number",
+        })
+        .gte(0),
+      z.literal(""),
+    ])
+    .optional();
+
+const getRequiredNumberSchema = () =>
   z.union([
     z.coerce
       .number()
@@ -15,16 +28,10 @@ const getOptionalNumberSchema = () =>
         message: "must be a whole number",
       })
       .gte(0),
-    z.literal(""),
+    z.literal("").refine(() => false, {
+      message: "is required",
+    }),
   ]);
-
-const getRequiredNumberSchema = () =>
-  z.coerce
-    .number()
-    .int({
-      message: "must be a whole number",
-    })
-    .gte(1, { message: required });
 
 export const PropertyRatesSchema = z.object({
   weekly: getRequiredNumberSchema(),
