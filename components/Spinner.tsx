@@ -7,6 +7,6 @@ const override = {
   margin: "1rem auto",
 };
 
-export default function Spinner() {
-  return <ClipLoader color='#3b82f6' cssOverride={override} size={150} aria-label='Loading Spinner' />;
+export default function Spinner({ size = 150 }: { size?: number }) {
+  return <ClipLoader color='#3b82f6' cssOverride={override} size={size} aria-label='Loading Spinner' />;
 }
