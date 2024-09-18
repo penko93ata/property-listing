@@ -4,6 +4,7 @@ import { FormField } from "../ui/form";
 import { Button } from "../ui/button";
 import { FaTrashAlt } from "react-icons/fa";
 import { TPropertyAddFormState } from "@/types/properties.types";
+import { ErrorMessage } from "@hookform/error-message";
 
 export function UploadPropertyImages() {
   const { control, getValues } = useFormContext<TPropertyAddFormState>();
@@ -34,6 +35,11 @@ export function UploadPropertyImages() {
         <Button variant='outline' type='button' onClick={onAddImages}>
           Images (Select up to 4 images)
         </Button>
+        <ErrorMessage
+          errors={errors}
+          name='images'
+          render={({ message }) => <p className='text-[0.8rem] font-medium text-destructive'>{message}</p>}
+        />
         {fields.map((field, index) => (
           <FormField
             key={field.imageId}
