@@ -1,11 +1,13 @@
 import { useRef } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { useFieldArray, useFormContext, useFormState } from "react-hook-form";
+import { FormField } from "../ui/form";
 import { Button } from "../ui/button";
 import { FaTrashAlt } from "react-icons/fa";
+import { TPropertyAddFormState } from "@/types/properties.types";
 
 export function UploadPropertyImages() {
-  const { control, getValues } = useFormContext();
+  const { control, getValues } = useFormContext<TPropertyAddFormState>();
+  const { errors } = useFormState<TPropertyAddFormState>({ control });
   const { fields, append, remove } = useFieldArray({ control, name: "images", keyName: "imageId" });
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);

@@ -1,7 +1,12 @@
 "use server";
 // TODO - Remove type
 // import { FormStateResponse } from "@/types/form.types";
-import { PropertyAddFormSchema, TPropertyAddFormParsedState, TPropertyAddFormState } from "@/types/properties.types";
+import {
+  PropertyAddFormSchema,
+  PropertyAddParsedSchema,
+  TPropertyAddFormParsedState,
+  TPropertyAddFormState,
+} from "@/types/properties.types";
 import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
@@ -16,7 +21,9 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
   }
 
   const { userId } = sessionUser;
-  const parsedData = PropertyAddFormSchema.safeParse(data);
+  const images = formData.getAll("images") as File[];
+
+  const parsedData = PropertyAddFormSchema.safeParse({ ...data, images });
 
   if (!parsedData.success) {
     const fields: Record<string, string> = {};
@@ -31,8 +38,6 @@ export async function onAddPropertySubmit(data: TPropertyAddFormState, formData:
   }
 
   const imageUrls = [];
-
-  const images = formData.getAll("images") as File[];
 
   for (const imageFile of images) {
     const imageBuffer = await imageFile.arrayBuffer();

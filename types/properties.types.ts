@@ -3,8 +3,8 @@ import { optional, z } from "zod";
 
 const { required, min } = getErrorMessages();
 
-// const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
-// const ACCEPTED_IMAGE_MIME_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 // const ACCEPTED_IMAGE_TYPES = ["jpeg", "jpg", "png", "webp"];
 
 const getOptionalNumberSchema = () =>
@@ -63,29 +63,23 @@ export const PropertyAddFormSchema = z.object({
     phone: z.string().min(1, { message: required }),
     email: z.string().email().trim(),
   }),
-  // images: z
-  //   .array(z.instanceof(File))
-  //   .min(1, { message: "At least one image is required" })
-  //   .max(4, { message: "Maximum of 4 images allowed" })
-  //   .refine(
-  //     (files) => {
-  //       // Check if all items in the array are instances of the File object
-  //       return files.every((file) => file instanceof File);
-  //     },
-  //     {
-  //       // If the refinement fails, throw an error with this message
-  //       message: "Expected a file",
-  //     }
-  //   ),
-  //   .refine((files) => files.every((file) => file.size <= MAX_FILE_SIZE), `File size should be less than ${MAX_FILE_SIZE}mb.`),
-  // images: z
-  //   .instanceof(FileList)
-  //   .refine((files) => files.length > 0, { message: "At least one image is required" })
-  //   .refine((files) => files.length <= 4, { message: "Maximum of 4 images allowed" }),
-  images: z.any(),
+  images: z
+    .any()
+    // To not allow empty files
+    .refine((files: File[]) => files?.length >= 1, { message: "At least one image is required" })
+    .refine((files: File[]) => files?.length <= 4, { message: "Maximum of 4 images allowed" })
+    // To not allow files other than images
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
+      message: ".jpg, .jpeg, .png and .webp files are accepted.",
+    })
+    // To not allow files larger than 5MB
+    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, {
+      message: `Max file size is 5MB.`,
+    }),
   isFeatured: z.boolean().optional(),
 });
 
+// Is this needed?
 export const PropertyAddParsedSchema = PropertyAddFormSchema.extend({
   images: z.array(z.string()).min(1, { message: "At least one image is required" }).max(4, { message: "Maximum of 4 images allowed" }),
   owner: z.string(),
@@ -103,6 +97,7 @@ export const PropertiesGetSchema = z.array(PropertyGetSchema.extend({ images: z.
 
 export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
 export type TPropertyEditFormState = TPropertyAddFormState & { id?: string };
+// Is this needed?
 export type TPropertyAddFormParsedState = z.infer<typeof PropertyAddParsedSchema>;
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
 export type TProperty = z.infer<typeof PropertyGetSchema>;
