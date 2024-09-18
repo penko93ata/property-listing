@@ -1,17 +1,11 @@
 "use server";
 
 import prisma from "@/lib/db";
-import { getSessionUser } from "./getSessionUser";
 import { revalidatePath } from "next/cache";
+import { getSessionUserId } from "./getSessionUserId";
 
 export async function markMessageAsRead(messageId: string) {
-  const sessionUser = await getSessionUser();
-
-  if (!sessionUser || !sessionUser.userId) {
-    throw new Error("User ID is required");
-  }
-
-  const { userId } = sessionUser;
+  const { userId } = await getSessionUserId();
 
   const message = await prisma.messages.findUnique({
     where: {

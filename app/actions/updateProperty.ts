@@ -1,18 +1,13 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
 import { PropertyAddFormSchema, TPropertyEditFormState } from "@/types/properties.types";
+import { getSessionUserId } from "./getSessionUserId";
 
 export async function updateProperty(propertyId: string, data: TPropertyEditFormState) {
-  const sessionUser = await getSessionUser();
+  const { userId } = await getSessionUserId();
 
-  if (!sessionUser || !sessionUser.userId) {
-    throw new Error("User ID is required");
-  }
-
-  const { userId } = sessionUser;
   const parsedData = PropertyAddFormSchema.safeParse(data);
 
   if (!parsedData.success) {

@@ -1,26 +1,15 @@
 "use server";
 // TODO - Remove type
 // import { FormStateResponse } from "@/types/form.types";
-import {
-  PropertyAddFormSchema,
-  PropertyAddParsedSchema,
-  TPropertyAddFormParsedState,
-  TPropertyAddFormState,
-} from "@/types/properties.types";
-import { getSessionUser } from "./getSessionUser";
+import { PropertyAddFormSchema, TPropertyAddFormState } from "@/types/properties.types";
 import prisma from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import cloudinary from "@/config/cloudinary";
+import { getSessionUserId } from "./getSessionUserId";
 
 export async function onAddPropertySubmit(data: TPropertyAddFormState, formData: FormData) {
-  const sessionUser = await getSessionUser();
-
-  if (!sessionUser || !sessionUser.userId) {
-    throw new Error("User ID is required");
-  }
-
-  const { userId } = sessionUser;
+  const { userId } = await getSessionUserId();
   const images = formData.getAll("images") as File[];
 
   const parsedData = PropertyAddFormSchema.safeParse({ ...data, images });

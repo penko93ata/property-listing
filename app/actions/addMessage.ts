@@ -1,8 +1,8 @@
 "use server";
 
 import { AddMessageSchema, TAddMessageFormState } from "@/types/messages.types";
-import { getSessionUser } from "./getSessionUser";
 import prisma from "@/lib/db";
+import { getSessionUserId } from "./getSessionUserId";
 
 export type TAddMessageSubmitProps = {
   data: TAddMessageFormState;
@@ -11,13 +11,7 @@ export type TAddMessageSubmitProps = {
 };
 
 export async function addMessage({ data, property, recipient }: TAddMessageSubmitProps) {
-  const sessionUser = await getSessionUser();
-
-  if (!sessionUser || !sessionUser.userId) {
-    throw new Error("User ID is required");
-  }
-
-  const { userId } = sessionUser;
+  const { userId } = await getSessionUserId();
 
   const parsedData = AddMessageSchema.safeParse(data);
 

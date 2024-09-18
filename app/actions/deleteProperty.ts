@@ -1,17 +1,11 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { getSessionUser } from "./getSessionUser";
 import cloudinary from "@/config/cloudinary";
 import prisma from "@/lib/db";
+import { getSessionUserId } from "./getSessionUserId";
 
 export async function deleteProperty(propertyId: string) {
-  const sessionUser = await getSessionUser();
-
-  if (!sessionUser || !sessionUser.userId) {
-    throw new Error("User ID is required");
-  }
-
-  const { userId } = sessionUser;
+  const { userId } = await getSessionUserId();
 
   const property = await prisma.properties.findUnique({
     where: {
