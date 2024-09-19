@@ -62,7 +62,7 @@ export default async function SearchResultsPage({
           {properties.length === 0 ? (
             <p>No search results</p>
           ) : (
-            <div className='grid grid-cols-1 md:grid-col-3 gap-6'>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
               {properties.map((property) => (
                 <PropertyCard key={property.id} property={property as TProperty} />
               ))}
