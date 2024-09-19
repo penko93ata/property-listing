@@ -10,12 +10,6 @@ export default async function SearchResultsPage({
 }: {
   searchParams: { location: string; propertyType: string };
 }) {
-  const locationPattern = new RegExp(location, "i");
-
-  if (Boolean(propertyType) && propertyType !== "All") {
-    const typePattern = new RegExp(propertyType, "i");
-  }
-
   const properties = await prisma.properties.findMany({
     where: {
       OR: [
