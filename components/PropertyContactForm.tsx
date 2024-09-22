@@ -21,6 +21,7 @@ export default function PropertyContactForm({ property }: { property: TProperty 
 
     if (response.submitted) {
       return toast({
+        variant: "success",
         title: "Message sent",
         description: "Your message has been sent",
       });

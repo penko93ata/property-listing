@@ -18,6 +18,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
     const read = await markMessageAsRead(message.id);
     setUnreadCount((prevCount) => (read ? prevCount - 1 : prevCount + 1));
     toast({
+      variant: "success",
       title: read ? "Message marked as read" : "Message marked as unread",
       description: `The message from ${message.name} has been marked as ${read ? "read" : "unread"}`,
     });
@@ -27,6 +28,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
     startTransition(async () => await deleteMessage(message.id));
     setUnreadCount((prevCount: number) => (message.read ? prevCount : prevCount - 1));
     toast({
+      variant: "destructive",
       title: "Message deleted",
       description: `The message from ${message.name} has been deleted`,
     });

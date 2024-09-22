@@ -20,6 +20,7 @@ export default function ProfileProperties({ properties: initialProperties }: { p
     setProperties(updatedProperties);
 
     toast({
+      variant: "destructive",
       description: "Property Deleted",
     });
   };

@@ -26,6 +26,7 @@ export default function BookmarkButton({ property, isBookmarked }: { property: T
       startTransition(async () => {
         const res = await bookmarkProperty(property.id);
         toast({
+          variant: res?.isBookmarked ? "success" : "destructive",
           description: res?.message ?? "Unknown",
         });
       });
