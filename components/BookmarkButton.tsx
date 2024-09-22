@@ -25,7 +25,7 @@ export default function BookmarkButton({ property, isBookmarked }: { property: T
         success: (data) => {
           return data?.message;
         },
-        error: (error) => "An error occurred",
+        error: () => "An error occurred",
       });
     });
   };
