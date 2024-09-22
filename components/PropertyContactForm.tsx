@@ -15,16 +15,20 @@ import { toast } from "sonner";
 export default function PropertyContactForm({ property }: { property: TProperty }) {
   const { data: session } = useSession();
 
-  const handleOnSubmit = async (data: TAddMessageFormState) => {
-    const response = await addMessage({ data, property: property.id, recipient: property.owner });
+  const handleOnSubmit = (data: TAddMessageFormState) => {
+    const addMessagePromise = addMessage({ data, property: property.id, recipient: property.owner });
 
-    if (response.submitted) {
-      toast.success("Your message has been sent");
-    }
-
-    if (response.error) {
-      toast.error(response.error);
-    }
+    toast.promise(addMessagePromise, {
+      loading: "Saving property...",
+      success: (data) => {
+        if (data.submitted) {
+          return "Your message has been sent";
+        }
+        if (data.error) {
+          return data.error;
+        }
+      },
+    });
   };
 
   if (!session) return null;
@@ -35,61 +39,6 @@ export default function PropertyContactForm({ property }: { property: TProperty 
       <Form schema={AddMessageSchema} defaultValues={defaultMessageFormValues} onSubmit={handleOnSubmit} className='grid gap-4'>
         <PropertyContactFormContent />
       </Form>
-      {/* <form>
-        <div className='mb-4'>
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='name'>
-            Name:
-          </label>
-          <input
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            id='name'
-            type='text'
-            placeholder='Enter your name'
-            required
-          />
-        </div>
-        <div className='mb-4'>
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='email'>
-            Email:
-          </label>
-          <input
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            id='email'
-            type='email'
-            placeholder='Enter your email'
-            required
-          />
-        </div>
-        <div className='mb-4'>
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='phone'>
-            Phone:
-          </label>
-          <input
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-            id='phone'
-            type='text'
-            placeholder='Enter your phone number'
-          />
-        </div>
-        <div className='mb-4'>
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='message'>
-            Message:
-          </label>
-          <textarea
-            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline'
-            id='message'
-            placeholder='Enter your message'
-          ></textarea>
-        </div>
-        <div>
-          <button
-            className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center'
-            type='submit'
-          >
-            <FaPaperPlane className='mr-2' /> Send Message
-          </button>
-        </div>
-      </form> */}
     </div>
   );
 }
