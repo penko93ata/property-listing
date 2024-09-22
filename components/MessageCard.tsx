@@ -21,7 +21,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
     });
   };
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
     startTransition(async () => await deleteMessage(message.id));
     setUnreadCount((prevCount: number) => (message.read ? prevCount : prevCount - 1));
     toast.error("Message deleted", { description: `The message from ${message.name} has been deleted` });

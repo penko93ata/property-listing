@@ -14,12 +14,12 @@ export default function BookmarkButton({ property, isBookmarked }: { property: T
 
   const [isPending, startTransition] = useTransition();
 
-  const handleClick = async () => {
+  const handleClick = () => {
     if (!userId) {
       toast.error("You must be logged in to bookmark a property");
     }
 
-    startTransition(async () => {
+    startTransition(() => {
       toast.promise(bookmarkProperty(property.id), {
         loading: "Loading...",
         success: (data) => {

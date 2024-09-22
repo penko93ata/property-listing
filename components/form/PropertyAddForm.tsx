@@ -17,7 +17,7 @@ export default function PropertyAddForm() {
       formData.append("images", data.images[i]);
     }
 
-    startTransition(async () => {
+    startTransition(() => {
       toast.promise(onAddPropertySubmit(omit(data, "images"), formData), {
         loading: "Adding property...",
         success: () => "Property added successfully",

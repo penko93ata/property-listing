@@ -5,11 +5,20 @@ import { PropertyAddFormContent } from "./form/PropertyAddFormContent";
 import { getPropertyEditFormDefaultValues } from "./form/utils";
 import { updateProperty } from "@/app/actions/updateProperty";
 import { useParams } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 export default function PropertyEditForm({ property }: { property: TProperty }) {
   const { id } = useParams<{ id: string }>();
-  const handleSubmit = async (data: TPropertyEditFormState) => {
-    return await updateProperty(id, data);
+  const [isPending, startTransition] = useTransition();
+  const handleSubmit = (data: TPropertyEditFormState) => {
+    startTransition(() => {
+      toast.promise(updateProperty(id, data), {
+        loading: "Updating property...",
+        success: () => "Property updated successfully",
+        error: (error) => error?.message || "An error occurred",
+      });
+    });
   };
   return (
     <Form<TPropertyEditFormState>
@@ -19,7 +28,7 @@ export default function PropertyEditForm({ property }: { property: TProperty }) 
       className='flex flex-col gap-4'
       encType='multipart/form-data'
     >
-      <PropertyAddFormContent />
+      <PropertyAddFormContent isPending={isPending} />
     </Form>
   );
 }
