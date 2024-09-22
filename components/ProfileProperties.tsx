@@ -4,11 +4,10 @@ import { TProperty } from "@/types/properties.types";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useToast } from "./ui/use-toast";
+import { toast } from "sonner";
 
 export default function ProfileProperties({ properties: initialProperties }: { properties: TProperty[] }) {
   const [properties, setProperties] = useState(initialProperties);
-  const { toast } = useToast();
 
   const handleDeleteProperty = async (propertyId: string) => {
     const confirmed = window.confirm("Are you sure you want to delete this property?");
@@ -19,10 +18,7 @@ export default function ProfileProperties({ properties: initialProperties }: { p
     const updatedProperties = properties.filter((property) => property.id !== propertyId);
     setProperties(updatedProperties);
 
-    toast({
-      variant: "destructive",
-      description: "Property Deleted",
-    });
+    toast.error("Property Deleted");
   };
   return properties.map((property) => (
     <div key={property.id} className='mb-10'>

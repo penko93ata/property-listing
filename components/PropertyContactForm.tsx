@@ -10,28 +10,20 @@ import { FormTextarea } from "./form/FormTextarea";
 import { addMessage } from "@/app/actions/addMessage";
 import { useSession } from "next-auth/react";
 import { useFormContext, useFormState } from "react-hook-form";
-import { useToast } from "./ui/use-toast";
+import { toast } from "sonner";
 
 export default function PropertyContactForm({ property }: { property: TProperty }) {
   const { data: session } = useSession();
-  const { toast } = useToast();
 
   const handleOnSubmit = async (data: TAddMessageFormState) => {
     const response = await addMessage({ data, property: property.id, recipient: property.owner });
 
     if (response.submitted) {
-      return toast({
-        variant: "success",
-        title: "Message sent",
-        description: "Your message has been sent",
-      });
+      toast.success("Your message has been sent");
     }
 
     if (response.error) {
-      return toast({
-        description: response.error,
-        variant: "destructive",
-      });
+      toast.error(response.error);
     }
   };
 

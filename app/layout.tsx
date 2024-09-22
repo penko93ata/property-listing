@@ -4,9 +4,9 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { twMerge } from "tailwind-merge";
-import { Toaster } from "@/components/ui/toaster";
 import Providers from "@/lib/query-provider";
 import "photoswipe/dist/photoswipe.css";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +32,7 @@ export default function RootLayout({
             <main>{children}</main>
             <Footer />
           </div>
-          <Toaster />
+          <Toaster richColors closeButton position='top-center' />
         </body>
       </html>
     </Providers>

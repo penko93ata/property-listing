@@ -2,14 +2,13 @@
 import { TMessage } from "@/types/messages.types";
 import { TProperty } from "@/types/properties.types";
 import { Button } from "./ui/button";
-import { useToast } from "./ui/use-toast";
 import { markMessageAsRead } from "@/app/actions/markMessageAsRead";
 import { deleteMessage } from "@/app/actions/deleteMessage";
 import { useTransition } from "react";
 import { useGlobalContext } from "@/context/GlobalContext";
+import { toast } from "sonner";
 
 export default function MessageCard({ message, property }: { message: TMessage; property: TProperty }) {
-  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   const { setUnreadCount } = useGlobalContext();
@@ -17,9 +16,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
   const handleReadClick = async () => {
     const read = await markMessageAsRead(message.id);
     setUnreadCount((prevCount) => (read ? prevCount - 1 : prevCount + 1));
-    toast({
-      variant: "success",
-      title: read ? "Message marked as read" : "Message marked as unread",
+    toast.success(read ? "Message marked as read" : "Message marked as unread", {
       description: `The message from ${message.name} has been marked as ${read ? "read" : "unread"}`,
     });
   };
@@ -27,11 +24,7 @@ export default function MessageCard({ message, property }: { message: TMessage; 
   const handleDeleteClick = async () => {
     startTransition(async () => await deleteMessage(message.id));
     setUnreadCount((prevCount: number) => (message.read ? prevCount : prevCount - 1));
-    toast({
-      variant: "destructive",
-      title: "Message deleted",
-      description: `The message from ${message.name} has been deleted`,
-    });
+    toast.error("Message deleted", { description: `The message from ${message.name} has been deleted` });
   };
 
   if (isPending) return <p>Deleting Message</p>;
