@@ -18,18 +18,16 @@ export default function BookmarkButton({ property, isBookmarked }: { property: T
     if (!userId) {
       toast.error("You must be logged in to bookmark a property");
     }
-    try {
-      startTransition(async () => {
-        const res = await bookmarkProperty(property.id);
-        if (res?.isBookmarked) {
-          toast.success(res?.message ?? "Unknown");
-        } else {
-          toast.error(res?.message ?? "Unknown");
-        }
+
+    startTransition(async () => {
+      toast.promise(bookmarkProperty(property.id), {
+        loading: "Loading...",
+        success: (data) => {
+          return data?.message;
+        },
+        error: (error) => "An error occurred",
       });
-    } catch (error) {
-      toast.error("An error occurred");
-    }
+    });
   };
 
   return (
