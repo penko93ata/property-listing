@@ -1,5 +1,5 @@
 "use client";
-import { PropertyAddFormSchema, TProperty, TPropertyEditFormState } from "@/types/properties.types";
+import { PropertyEditFormSchema, TProperty, TPropertyEditFormState } from "@/types/properties.types";
 import { Form } from "./form/Form";
 import { PropertyAddFormContent } from "./form/PropertyAddFormContent";
 import { getPropertyEditFormDefaultValues } from "./form/utils";
@@ -22,7 +22,7 @@ export default function PropertyEditForm({ property }: { property: TProperty }) 
   };
   return (
     <Form<TPropertyEditFormState>
-      schema={PropertyAddFormSchema}
+      schema={PropertyEditFormSchema}
       defaultValues={getPropertyEditFormDefaultValues(property)}
       onSubmit={handleSubmit}
       className='flex flex-col gap-4'

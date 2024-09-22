@@ -78,6 +78,10 @@ export const PropertyAddFormSchema = z.object({
   isFeatured: z.boolean().optional(),
 });
 
+export const PropertyEditFormSchema = PropertyAddFormSchema.extend({
+  images: z.array(z.string()).optional(),
+});
+
 export const PropertyGetSchema = PropertyAddFormSchema.extend({
   id: z.string().regex(/^[0-9a-f]{24}$/),
   owner: z.string(),
@@ -89,7 +93,7 @@ export const PropertyGetSchema = PropertyAddFormSchema.extend({
 export const PropertiesGetSchema = z.array(PropertyGetSchema.extend({ images: z.array(z.string()) }));
 
 export type TPropertyAddFormState = z.infer<typeof PropertyAddFormSchema>;
-export type TPropertyEditFormState = TPropertyAddFormState & { id?: string };
+export type TPropertyEditFormState = Omit<TPropertyAddFormState, "images"> & { id?: string };
 export type TPropertyRates = z.infer<typeof PropertyRatesSchema>;
 export type TProperty = z.infer<typeof PropertyGetSchema>;
 

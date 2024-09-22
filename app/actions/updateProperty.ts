@@ -2,13 +2,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
-import { PropertyAddFormSchema, TPropertyEditFormState } from "@/types/properties.types";
+import { PropertyEditFormSchema, TPropertyEditFormState } from "@/types/properties.types";
 import { getSessionUserId } from "./getSessionUserId";
 
 export async function updateProperty(propertyId: string, data: TPropertyEditFormState) {
   const { userId } = await getSessionUserId();
 
-  const parsedData = PropertyAddFormSchema.safeParse(data);
+  const parsedData = PropertyEditFormSchema.safeParse(data);
 
   if (!parsedData.success) {
     const fields: Record<string, string> = {};
