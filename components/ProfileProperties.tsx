@@ -3,24 +3,25 @@ import { deleteProperty } from "@/app/actions/deleteProperty";
 import { TProperty } from "@/types/properties.types";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import DeletePropertyDialog from "./DeletePropertyDialog";
 
 export default function ProfileProperties({ properties: initialProperties }: { properties: TProperty[] }) {
   const [properties, setProperties] = useState(initialProperties);
+  const [isPending, startTransition] = useTransition();
 
-  const handleDeleteProperty = async (propertyId: string) => {
-    const confirmed = window.confirm("Are you sure you want to delete this property?");
-    if (!confirmed) return;
-
-    toast.promise(deleteProperty(propertyId), {
-      loading: "Deleting property...",
-      success: () => {
-        const updatedProperties = properties.filter((property) => property.id !== propertyId);
-        setProperties(updatedProperties);
-        return "Property deleted successfully";
-      },
-      error: (error) => error?.message || "An error occurred",
+  const handleDeleteProperty = (propertyId: string) => {
+    startTransition(() => {
+      toast.promise(deleteProperty(propertyId), {
+        loading: "Deleting property...",
+        success: () => {
+          const updatedProperties = properties.filter((property) => property.id !== propertyId);
+          setProperties(updatedProperties);
+          return "Property deleted successfully";
+        },
+        error: (error) => error?.message || "An error occurred",
+      });
     });
   };
   return properties.map((property) => (
@@ -38,13 +39,7 @@ export default function ProfileProperties({ properties: initialProperties }: { p
         <Link href={`/properties/${property.id}/edit`} className='bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600'>
           Edit
         </Link>
-        <button
-          className='bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600'
-          type='button'
-          onClick={() => handleDeleteProperty(property.id)}
-        >
-          Delete
-        </button>
+        <DeletePropertyDialog deleteProperty={handleDeleteProperty} propertyId={property.id} isPending={isPending} />
       </div>
     </div>
   ));
