@@ -19,7 +19,7 @@ export default function PropertyContactForm({ property }: { property: TProperty 
     const addMessagePromise = addMessage({ data, property: property.id, recipient: property.owner });
 
     toast.promise(addMessagePromise, {
-      loading: "Saving property...",
+      loading: "Sending message...",
       success: (data) => {
         if (data.submitted) {
           return "Your message has been sent";

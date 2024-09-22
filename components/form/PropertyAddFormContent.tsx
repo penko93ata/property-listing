@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import { UploadPropertyImages } from "./UploadPropertyImages";
 import { useParams } from "next/navigation";
 
-export function PropertyAddFormContent() {
+export function PropertyAddFormContent({ isPending }: { isPending: boolean }) {
   const { control } = useFormContext();
   const { isSubmitting } = useFormState({ control });
   const { id } = useParams<{ id: string }>();
@@ -58,7 +58,7 @@ export function PropertyAddFormContent() {
       <Button
         className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
         type='submit'
-        disabled={isSubmitting}
+        disabled={isSubmitting || isPending}
       >
         {isEditPage ? "Edit" : "Add"} Property
       </Button>

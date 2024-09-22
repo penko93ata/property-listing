@@ -13,12 +13,15 @@ export default function ProfileProperties({ properties: initialProperties }: { p
     const confirmed = window.confirm("Are you sure you want to delete this property?");
     if (!confirmed) return;
 
-    await deleteProperty(propertyId);
-
-    const updatedProperties = properties.filter((property) => property.id !== propertyId);
-    setProperties(updatedProperties);
-
-    toast.error("Property Deleted");
+    toast.promise(deleteProperty(propertyId), {
+      loading: "Deleting property...",
+      success: () => {
+        const updatedProperties = properties.filter((property) => property.id !== propertyId);
+        setProperties(updatedProperties);
+        return "Property deleted successfully";
+      },
+      error: (error) => error?.message || "An error occurred",
+    });
   };
   return properties.map((property) => (
     <div key={property.id} className='mb-10'>
