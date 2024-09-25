@@ -23,17 +23,14 @@ export default function FeaturedPropertyCard({ property }: { property: TProperty
         </h3>
         <div className='flex justify-center gap-4 text-gray-500 mb-4'>
           <p>
-            <FaBed className='inline-block mr-2' /> {property.beds}
-            <span className='md:hidden lg:inline'>Beds</span>
+            <FaBed className='inline-block mr-2' /> {property.beds} <span className='md:hidden lg:inline'>Beds</span>
           </p>
           <p>
-            <FaBath className='inline-block mr-2' /> {property.baths}
-            <span className='md:hidden lg:inline'>Baths</span>
+            <FaBath className='inline-block mr-2' /> {property.baths} <span className='md:hidden lg:inline'>Baths</span>
           </p>
           <p>
             <FaRulerCombined className='inline-block mr-2' />
-            {property.square_feet}
-            <span className='md:hidden lg:inline'>sqft</span>
+            {property.square_feet} <span className='md:hidden lg:inline'>sqft</span>
           </p>
         </div>
 
