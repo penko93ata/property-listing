@@ -8,6 +8,8 @@ import Providers from "@/lib/query-provider";
 import "photoswipe/dist/photoswipe.css";
 import { Toaster } from "sonner";
 import Template from "./template";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +33,9 @@ export default function RootLayout({
           <div className='flex flex-col justify-between h-[100dvh]'>
             <Navbar />
             <Template>
-              <main>{children}</main>
+              <Suspense fallback={<Loading />}>
+                <main>{children}</main>
+              </Suspense>
             </Template>
             <Footer />
           </div>
