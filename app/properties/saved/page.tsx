@@ -1,4 +1,5 @@
 import { getSessionUser } from "@/app/actions/getSessionUser";
+import Template from "@/app/template";
 import PropertyCard from "@/components/PropertyCard";
 import prisma from "@/lib/db";
 import { TProperty } from "@/types/properties.types";
@@ -14,19 +15,21 @@ export default async function SavePropertiesPage() {
   const bookmarkedProperties = await prisma.properties.findMany({ where: { id: { in: user?.bookmarks ?? [] } } });
 
   return (
-    <section className='px-4 py-6'>
-      <div className='container lg:container m-auto px-4 py-6'>
-        <h1 className='text-2xl mb-4'>Saved Properties</h1>
-        {bookmarkedProperties.length === 0 ? (
-          <p>You have not saved any properties yet</p>
-        ) : (
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            {bookmarkedProperties.map((property) => (
-              <PropertyCard key={property.id} property={property as TProperty} />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
+    <Template>
+      <section className='px-4 py-6'>
+        <div className='container lg:container m-auto px-4 py-6'>
+          <h1 className='text-2xl mb-4'>Saved Properties</h1>
+          {bookmarkedProperties.length === 0 ? (
+            <p>You have not saved any properties yet</p>
+          ) : (
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
+              {bookmarkedProperties.map((property) => (
+                <PropertyCard key={property.id} property={property as TProperty} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </Template>
   );
 }

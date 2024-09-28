@@ -7,6 +7,7 @@ import { PropertyAddFormContent } from "./PropertyAddFormContent";
 import { omit } from "lodash";
 import { toast } from "sonner";
 import { useTransition } from "react";
+import Template from "@/app/template";
 
 export default function PropertyAddForm() {
   const [isPending, startTransition] = useTransition();
@@ -27,14 +28,16 @@ export default function PropertyAddForm() {
   };
 
   return (
-    <Form<TPropertyAddFormState>
-      schema={PropertyAddFormSchema}
-      defaultValues={propertyAddFormDefaultValues}
-      onSubmit={handleSubmit}
-      className='flex flex-col gap-4'
-      encType='multipart/form-data'
-    >
-      <PropertyAddFormContent isPending={isPending} />
-    </Form>
+    <Template>
+      <Form<TPropertyAddFormState>
+        schema={PropertyAddFormSchema}
+        defaultValues={propertyAddFormDefaultValues}
+        onSubmit={handleSubmit}
+        className='flex flex-col gap-4'
+        encType='multipart/form-data'
+      >
+        <PropertyAddFormContent isPending={isPending} />
+      </Form>
+    </Template>
   );
 }

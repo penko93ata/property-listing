@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import Providers from "@/lib/query-provider";
 import "photoswipe/dist/photoswipe.css";
 import { Toaster } from "sonner";
+import Template from "./template";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default function RootLayout({
         <body className={twMerge(inter.className, "flex flex-col")}>
           <div className='flex flex-col justify-between h-[100dvh]'>
             <Navbar />
-            <main>{children}</main>
+            <Template>
+              <main>{children}</main>
+            </Template>
             <Footer />
           </div>
           <Toaster richColors closeButton position='top-center' />
